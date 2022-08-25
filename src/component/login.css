@@ -1,0 +1,25 @@
+.center {
+    width: 450px;
+    min-height: 500px;
+    text-align: center;
+
+}
+
+.btnAction {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.login {
+
+    display: flex;
+
+    /* make main axis horizontal (default setting) */
+    justify-content: center;
+    /* center items horizontally, in this case */
+    align-items: center;
+    /* center items vertically, in this case */
+    height: 100vh;
+
+}
