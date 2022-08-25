@@ -4,7 +4,7 @@ import { Button } from '@mui/material';
 import './home.css'
 import { ipMaster } from '../dto/ipMaster';
 import { StorageContext } from '../storage/storageContext';
-import { getIp, postData, deleteData } from '../api/apiService'
+import { getIp, postData, deleteData } from '../api/apiService.ts'
 import { notification, ipValid } from '../util/util'
 
 import { useNavigate } from 'react-router-dom';
