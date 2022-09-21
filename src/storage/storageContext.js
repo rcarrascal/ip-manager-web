@@ -1,7 +1,7 @@
-import { createContext, useState, useEffect } from "react";
+import React, {useState, useEffect} from "react";
 import storageData from './stateInitial';
 
-export const StorageContext = createContext();
+export const StorageContext = React.createContext({});
 export const StorageProvider = (props) => {
     //Estorage globar con la información del estado de la aplicación
     const [storage, setStorage] = useState(localStorage.getItem("storage") === null ? storageData : JSON.parse(localStorage.getItem("storage")));

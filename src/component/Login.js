@@ -48,7 +48,7 @@ function Login() {
             }).catch(error => {
                 const err = error.message ? error.message : error;
 
-                notification("danger", "Guardando Ip ", err);
+                notification("danger", "Login ", err);
                 value.setLoading(false);
             });
 

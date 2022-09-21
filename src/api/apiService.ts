@@ -28,7 +28,7 @@ export async function postData(url = '', data = {}, headers = {}) {
 
 }
 
-export async function deleteData(url = '', data = {}, token = '') {
+export async function deleteData(url = '', token = '') {
     const response = await fetch(url, {
         method: 'DELETE',
         mode: 'cors',
@@ -38,7 +38,7 @@ export async function deleteData(url = '', data = {}, token = '') {
             'Content-Type': 'application/json',
             'Authorization': "Bearer " + token
         },
-        body: JSON.stringify(data)
+        body: null
     });
     return response.json();
 

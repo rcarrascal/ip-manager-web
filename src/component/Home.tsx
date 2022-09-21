@@ -55,9 +55,19 @@ function Home() {
   ];
 
 
-
-
-
+  const validate401 = (response) => {
+    if (response.error) {
+      if (response.status === '401') {
+        value.setLoading(false);
+        localStorage.clear();
+        value.handleToken(null);
+        value.setClearUser();
+        notification("danger", "Listando Ip ", response.error);
+        navigate("/login");
+        return;
+      }
+    }
+  }
 
   const fetchData = useCallback(async () => {
     value.setLoading(true);
@@ -65,17 +75,7 @@ function Home() {
     getIp(process.env.REACT_APP_URL + '/ip_master', value.token)
       .then(response => {
 
-        if (response.error) {
-          if (response.status === '401') {
-            value.setLoading(false);
-            localStorage.clear();
-            value.handleToken(null);
-            value.setClearUser();
-            notification("danger", "Listando Ip ", response.error);
-            navigate("/");
-            return;
-          }
-        }
+        validate401(response);
 
         if (response.message) {
           throw new Error(response.message);
@@ -158,8 +158,9 @@ function Home() {
    * @param val 
    */
   const eventDelete = (val) => {
-    deleteData(process.env.REACT_APP_URL + 'ip_master/' + val, value.token)
+    deleteData(process.env.REACT_APP_URL + '/ip_master/' + val,  value.token)
       .then(e => {
+        validate401(e);
         fetchData();
       })
       .catch(error => {
