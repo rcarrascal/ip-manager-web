@@ -1,0 +1,19 @@
+{
+  "ip_master": [
+    {
+      "id": 1,
+      "ipAddress": "10.18.100.30",
+      "description": "description"
+    },
+    {
+      "id": 2,
+      "ipAddress": "10.18.100.46",
+      "description": "description"
+    },
+    {
+      "ipAddress": "asd",
+      "description": "sd",
+      "id": 3
+    }
+  ]
+}
