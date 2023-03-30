@@ -2,12 +2,12 @@
   "ip_master": [
     {
       "id": 1,
-      "ipAddress": "10.18.100.30",
+      "ipAddress": "http://delfin.puertocartagena.com:3706/",
       "description": "description"
     },
     {
       "id": 2,
-      "ipAddress": "10.18.100.46",
+      "ipAddress": "http://delfin.puertocartagena.com:3706/",
       "description": "description"
     },
     {
