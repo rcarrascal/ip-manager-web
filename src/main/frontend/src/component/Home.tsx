@@ -72,7 +72,7 @@ function Home() {
   const fetchData = useCallback(async () => {
     value.setLoading(true);
 
-    getIp(process.env.REACT_APP_URL + '/ip_master', value.token)
+    getIp('/ip_master', value.token)
       .then(response => {
 
         validate401(response);
@@ -125,7 +125,7 @@ function Home() {
       'Content-Type': 'application/json',
       'Authorization': "Bearer " + value.token
     };
-    postData(process.env.REACT_APP_URL + '/ip_master', data, headers)
+    postData('/ip_master', data, headers)
       .then(response => {
         console.log(response);
         if (response.error) {
@@ -158,7 +158,7 @@ function Home() {
    * @param val 
    */
   const eventDelete = (val) => {
-    deleteData(process.env.REACT_APP_URL + '/ip_master/' + val,  value.token)
+    deleteData('/ip_master/' + val,  value.token)
       .then(e => {
         validate401(e);
         fetchData();

@@ -33,7 +33,7 @@ function Login() {
         const headers = {
             'Content-Type': 'application/json'
         };
-        postData(process.env.REACT_APP_URL + '/auth/login', data, headers)
+        postData('/auth/login', data, headers)
             .then(response => {
                 console.log(response);
                 if (response.error) {
