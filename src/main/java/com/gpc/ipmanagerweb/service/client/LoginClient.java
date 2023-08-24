@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.concurrent.CompletableFuture;
 
-@FeignClient(value = "ipManagerLoginService", url = "https://200.9.72.58:3706/auth")
+@FeignClient(value = "ipManagerLoginService", url = "https://ip-manager-service-test.puertocartagena.com:3706/auth")
 public interface LoginClient {
 
     @PostMapping(path = "/login")

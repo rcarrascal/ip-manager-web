@@ -15,9 +15,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 
-import java.util.concurrent.CompletableFuture;
-
-@FeignClient(value = "ipManagerService", url = "https://200.9.72.58:3706/ipMaster")
+@FeignClient(value = "ipManagerService", url = "https://ip-manager-service-test.puertocartagena.com:3706/ipMaster")
 public interface IpManagerClient {
 
     @PostMapping
