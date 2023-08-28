@@ -35,15 +35,15 @@ function Login() {
         };
         postData('/auth/login', data, headers)
             .then(response => {
-                console.log(response);
+                console.log(response.response);
                 if (response.error) {
-                    throw new Error(response.error);
+                    throw new Error(response.response.error);
                 }
                 if (response.message) {
-                    throw new Error(response.message);
+                    throw new Error(response.response.message);
                 }
                 value.setLoading(false);
-                value.handleToken(response.token);
+                value.handleToken(response.response.token);
                 navigate("/");
             }).catch(error => {
                 const err = error.message ? error.message : error;

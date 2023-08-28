@@ -5,7 +5,9 @@
  */
 package com.gpc.ipmanagerweb.controllers;
 
+import com.gpc.ipmanagerweb.dto.Answer;
 import com.gpc.ipmanagerweb.dto.AuthenticationRequest;
+import com.gpc.ipmanagerweb.dto.IpManagerResponse;
 import com.gpc.ipmanagerweb.service.client.LoginClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +33,11 @@ public class LoginController {
     private LoginClient loginClient;
 
     @PostMapping(path = "/login")
-    public ResponseEntity doLogin(@RequestBody AuthenticationRequest user) {
+    public IpManagerResponse<Answer> doLogin(@RequestBody AuthenticationRequest user) {
         log.info("Iniciando sesión. usuario={}", user.getUsername());
-        return loginClient.doLogin(user);
+        IpManagerResponse<Answer> response=loginClient.doLogin(user);
+        log.info("Mejoras " + response);
+        return response;
     }
 
     @GetMapping("/logout/{username}")

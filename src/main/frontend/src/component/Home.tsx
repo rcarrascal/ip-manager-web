@@ -81,7 +81,7 @@ function Home() {
           throw new Error(response.message);
         }
 
-        setRows(response);
+        setRows(response.response);
         value.setLoading(false);
       }).catch(error => {
 
