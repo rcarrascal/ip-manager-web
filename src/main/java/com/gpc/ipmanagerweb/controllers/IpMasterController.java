@@ -1,7 +1,9 @@
 package com.gpc.ipmanagerweb.controllers;
 
 
+import com.gpc.ipmanagerweb.dto.IpManagerResponse;
 import com.gpc.ipmanagerweb.dto.IpMasterRequest;
+import com.gpc.ipmanagerweb.dto.IpMasterResponse;
 import com.gpc.ipmanagerweb.service.client.IpManagerClient;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 @RequestMapping("ip_master")
@@ -29,25 +32,25 @@ public class IpMasterController {
     }
 
     @PostMapping
-    public ResponseEntity save(@RequestBody IpMasterRequest ipMasterRequest) {
+    public IpManagerResponse<IpMasterResponse> save(@RequestBody IpMasterRequest ipMasterRequest) {
         HttpServletRequest httpRequest = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         return ipManagerClient.save(getHeaders(httpRequest),ipMasterRequest);
     }
 
     @PutMapping
-    public ResponseEntity update(@RequestBody IpMasterRequest ipMasterRequest) {
+    public IpManagerResponse<IpMasterResponse> update(@RequestBody IpMasterRequest ipMasterRequest) {
         HttpServletRequest httpRequest = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         return ipManagerClient.update(getHeaders(httpRequest), ipMasterRequest);
     }
 
     @GetMapping
-    public ResponseEntity getAllIpsByUser(){
+    public IpManagerResponse<List<IpMasterResponse>> getAllIpsByUser(){
         HttpServletRequest httpRequest = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         return ipManagerClient.getAllIpsByUser(getHeaders(httpRequest));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteAllIpsByUser(@PathVariable(name = "id") Long id) {
+    public IpManagerResponse<String> deleteAllIpsByUser(@PathVariable(name = "id") Long id) {
         HttpServletRequest httpRequest = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         return ipManagerClient.deleteAllIpsByUser(getHeaders(httpRequest),id);
     }

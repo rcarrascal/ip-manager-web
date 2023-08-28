@@ -1,7 +1,9 @@
 package com.gpc.ipmanagerweb.service.client;
 
 import com.gpc.ipmanagerweb.dto.AuthenticationRequest;
+import com.gpc.ipmanagerweb.dto.IpManagerResponse;
 import com.gpc.ipmanagerweb.dto.IpMasterRequest;
+import com.gpc.ipmanagerweb.dto.IpMasterResponse;
 import feign.Headers;
 import feign.Param;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -15,19 +17,21 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 
+import java.util.List;
+
 @FeignClient(value = "ipManagerService", url = "https://ip-manager-service-test.puertocartagena.com:3706/ip-master")
 public interface IpManagerClient {
     @PostMapping
-    ResponseEntity save(@RequestHeader HttpHeaders headers, @RequestBody IpMasterRequest ipMasterRequest);
+    IpManagerResponse<IpMasterResponse> save(@RequestHeader HttpHeaders headers, @RequestBody IpMasterRequest ipMasterRequest);
 
     @PutMapping
-    ResponseEntity update(@RequestHeader HttpHeaders headers,@RequestBody IpMasterRequest ipMasterRequest);
+    IpManagerResponse<IpMasterResponse> update(@RequestHeader HttpHeaders headers,@RequestBody IpMasterRequest ipMasterRequest);
 
 
     @GetMapping
-    ResponseEntity getAllIpsByUser(@RequestHeader HttpHeaders headers);
+    IpManagerResponse<List<IpMasterResponse>> getAllIpsByUser(@RequestHeader HttpHeaders headers);
 
     @DeleteMapping("/{id}")
-    ResponseEntity deleteAllIpsByUser(@RequestHeader HttpHeaders headers,@PathVariable(name = "id") Long id);
+    IpManagerResponse<String> deleteAllIpsByUser(@RequestHeader HttpHeaders headers,@PathVariable(name = "id") Long id);
 
 }
