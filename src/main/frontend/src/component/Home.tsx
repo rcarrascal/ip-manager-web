@@ -75,13 +75,13 @@ function Home() {
     getIp('/ip_master', value.token)
       .then(response => {
 
-        validate401(response);
+        //validate401(response);
 
-        if (response.message) {
-          throw new Error(response.message);
-        }
+        //if (response.message) {
+          //throw new Error(response.message);
+       // }
 
-        setRows(response.response);
+        setRows([]);
         value.setLoading(false);
       }).catch(error => {
 

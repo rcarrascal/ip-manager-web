@@ -19,7 +19,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("ip-master")
+@RequestMapping("ip_master")
 public class IpMasterController {
 
     private final IpManagerClient ipManagerClient;
