@@ -37,9 +37,9 @@ function Login() {
             .then(response => {
                 console.log(response.response);
                 if (response.error) {
-                    throw new Error(response.response.error);
+                    throw new Error(response.error);
                 }
-                if (response.message) {
+                if (response.response.message) {
                     throw new Error(response.response.message);
                 }
                 value.setLoading(false);

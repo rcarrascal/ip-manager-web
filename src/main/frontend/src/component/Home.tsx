@@ -75,13 +75,13 @@ function Home() {
     getIp('/ip_master', value.token)
       .then(response => {
 
-        //validate401(response);
+        validate401(response);
 
-        //if (response.message) {
-          //throw new Error(response.message);
-       // }
+        if (response.message) {
+          throw new Error(response.message);
+        }
 
-        setRows([]);
+        setRows(response.response);
         value.setLoading(false);
       }).catch(error => {
 
@@ -127,12 +127,9 @@ function Home() {
     };
     postData('/ip_master', data, headers)
       .then(response => {
-        console.log(response);
+        console.log(response.response);
         if (response.error) {
           throw new Error(response.error);
-        }
-        if (response.message) {
-          throw new Error(response.message);
         }
         value.setLoading(false);
         fetchData();
