@@ -14,6 +14,20 @@ export async function getIp(url = '', token = '') {
     return response.json();
 }
 
+export async function logout(url = '') {
+    const response = await fetch(url, {
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache',
+        //credentials
+        headers: {
+            'Content-Type': 'application/json'
+        }
+
+    });
+    return response.json();
+}
+
 export async function postData(url = '', data = {}, headers = {}) {
 
     const response = await fetch(url, {

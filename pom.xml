@@ -15,10 +15,6 @@
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>1.8</java.version>
-		<frontend-src-dir>${project.basedir}/src/main/frontend</frontend-src-dir>
-		<node.version>v14.15.4</node.version>
-		<yarn.version>v1.16.0</yarn.version>
-		<frontend-maven-plugin.version>1.7.6</frontend-maven-plugin.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -39,10 +35,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
 	</dependencies>
 	<dependencyManagement>
@@ -70,62 +62,77 @@
 					</excludes>
 				</configuration>
 			</plugin>
-			<!--plugin>
-				<groupId>com.github.eirslett</groupId>
-				<artifactId>frontend-maven-plugin</artifactId>
-				<version>${frontend-maven-plugin.version}</version>
-
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>3.1.0</version>
 				<configuration>
-					<nodeVersion>${node.version}</nodeVersion>
-					<yarnVersion>${yarn.version}</yarnVersion>
-					<workingDirectory>${frontend-src-dir}</workingDirectory>
-					<installDirectory>${project.build.directory}</installDirectory>
+					<filesets>
+						<fileset>
+							<directory>${project.basedir}/src/main/resources/static</directory>
+							<includes>
+								<include>**/*</include>
+							</includes>
+						</fileset>
+					</filesets>
 				</configuration>
-
 				<executions>
 					<execution>
-						<id>install-frontend-tools</id>
+						<id>clean-resources</id>
+						<phase>generate-resources</phase>
 						<goals>
-							<goal>install-node-and-yarn</goal>
+							<goal>clean</goal>
 						</goals>
 					</execution>
-
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>3.0.0</version>
+				<executions>
 					<execution>
-						<id>yarn-install</id>
+						<id>npm-build</id>
+						<phase>generate-resources</phase>
 						<goals>
-							<goal>yarn</goal>
+							<goal>run</goal>
 						</goals>
 						<configuration>
-							<arguments>install</arguments>
-						</configuration>
-					</execution>
+							<target>
+								<exec executable="cmd.exe" osfamily="windows" dir="${project.basedir}/src/main/frontend">
+									<arg value="/c"/>
+									<arg value="npm" />
+									<arg value="run" />
+									<arg value="build" />
+									<arg value="--prod"/>
+									<arg value="--no-cache"/>
+								</exec>
 
-					<execution>
-						<id>build-frontend</id>
-						<goals>
-							<goal>yarn</goal>
-						</goals>
-						<phase>prepare-package</phase>
-						<configuration>
-							<arguments>build</arguments>
+								<exec executable="/bin/sh" osfamily="unix" dir="${project.basedir}/src/main/frontend">
+									<arg value="-c"/>
+									<arg value="npm run build --prod --no-cache"/>
+								</exec>
+							</target>
 						</configuration>
 					</execution>
 				</executions>
-			</plugin-->
+			</plugin>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.2.0</version>
 				<executions>
 					<execution>
-						<id>position-react-build</id>
+						<id>copy-react-build</id>
+						<phase>generate-resources</phase>
 						<goals>
 							<goal>copy-resources</goal>
 						</goals>
-						<phase>prepare-package</phase>
 						<configuration>
-							<outputDirectory>${project.build.outputDirectory}/static</outputDirectory>
+							<outputDirectory>${project.basedir}/src/main/resources/static</outputDirectory>
 							<resources>
 								<resource>
-									<directory>${frontend-src-dir}/build</directory>
+									<directory>${project.basedir}/src/main/frontend/build</directory>
 									<filtering>false</filtering>
 								</resource>
 							</resources>
