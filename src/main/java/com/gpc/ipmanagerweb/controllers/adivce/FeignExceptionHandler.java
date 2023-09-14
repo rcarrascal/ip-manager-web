@@ -12,8 +12,8 @@ public class FeignExceptionHandler {
 
     @ExceptionHandler(FeignException.class)
     public ResponseEntity<ErrorResponse> handleFeignException(FeignException ex) {
-        log.error("Error en la solicitud a otro servicio: {}" , ex.getMessage());
-        final ErrorResponse errorResponse = new ErrorResponse(String.valueOf(ex.status()), ex.getMessage());
+        log.error("Error en la solicitud a otro servicio: {}" , ex.getLocalizedMessage());
+        final ErrorResponse errorResponse = new ErrorResponse(String.valueOf(ex.status()), ex.getLocalizedMessage());
         return ResponseEntity.status(ex.status()).body(errorResponse);
     }
 }

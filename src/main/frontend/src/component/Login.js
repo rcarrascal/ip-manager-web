@@ -36,11 +36,9 @@ function Login() {
         postData('/auth/login', data, headers)
             .then(response => {
                 console.log(response.response);
-                if (response.error) {
-                    throw new Error(response.error);
-                }
-                if (response.response.message) {
-                    throw new Error(response.response.message);
+
+                if (response.status &&response.status!='200') {
+                    throw new Error(response.message);
                 }
                 value.setLoading(false);
                 value.handleToken(response.response.token);
