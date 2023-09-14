@@ -1,0 +1,7 @@
+
+
+feign:
+ client:
+   url:
+     login: http://localhost:3706/auth
+     ipManager: http://localhost:3706/ip-master
