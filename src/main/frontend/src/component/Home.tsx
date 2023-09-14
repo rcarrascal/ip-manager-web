@@ -21,7 +21,7 @@ function Home() {
    * @returns 
    */
   const renderDetailsButton = (params) => {
-    if(params.row.state =="ACEPTADO"){
+    if(params.row.state.trim() =="ACEPTADO"){
       return <Fragment></Fragment>
     }
     return (
