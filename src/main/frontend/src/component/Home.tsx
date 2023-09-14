@@ -66,8 +66,9 @@ function Home() {
         value.setClearUser();
         notification("danger", "Listando Ip ","Su token no es valido. Favor de logearse nuevamente");
         navigate("/login");
-        return;
+        return true;
       }
+      return false;
     
   }
 
@@ -77,7 +78,9 @@ function Home() {
     getIp('/ip_master', value.token)
       .then(response => {
 
-        validate401(response);
+        if(validate401(response)){
+          return;
+        }
 
         if (response.message) {
           throw new Error(response.message);
@@ -86,10 +89,11 @@ function Home() {
         setRows(response.response);
         value.setLoading(false);
       }).catch(error => {
-        validate401(error);
+        if(!validate401(error)){
         const err = error.message ? error.message : error;
         notification("danger", "Listando Ip ", err);
         value.setLoading(false);
+      }
       });
 
   }, [])
