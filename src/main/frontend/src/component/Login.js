@@ -35,8 +35,6 @@ function Login() {
         };
         postData('/auth/login', data, headers)
             .then(response => {
-                console.log(response.response);
-
                 if (response.status &&response.status!='200') {
                     throw new Error(response.message);
                 }
@@ -44,8 +42,7 @@ function Login() {
                 value.handleToken(response.response.token);
                 navigate("/");
             }).catch(error => {
-                const err = error.message ? error.message : error;
-
+                const err = error.message ? error.message : 'Usuario y/o contraseña errónea';
                 notification("danger", "Login ", err);
                 value.setLoading(false);
             });

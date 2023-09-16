@@ -25,7 +25,7 @@ public class FeignExceptionHandler {
     }
 
     private String extractCustomErrorMessage(String errorMessage) {
-        Pattern pattern = Pattern.compile("\\[\\{.+?\"message\":\"(.+?)\"\\}\\]");
+        Pattern pattern = Pattern.compile("\"message\":\"([^\"]+)\"");
         Matcher matcher = pattern.matcher(errorMessage);
         if (matcher.find()) {
             return matcher.group(1);
