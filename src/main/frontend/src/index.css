@@ -11,3 +11,13 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.btnAction-h{
+  float: left;
+  padding-bottom: 0.8rem;
+}
+.btnContainer{
+  display: flex;
+  justify-content: space-between;
+  width: 11.8rem;
+}

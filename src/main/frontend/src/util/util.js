@@ -31,7 +31,15 @@ export function notification(type, title, message) {
  * @param {*} event 
  * @returns 
  */
-export const ipValid = (event) => {
-    return /^((?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])[.]){3}(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$/.test(event);
+export const ipValid = (ip) => {
 
+    // Expresión regular para cualquier dirección IP privada
+    // RANGOS: 192.168.0.0 a 192.168.255.255, 10.0.0.0 a 10.255.255.255 y 172.16.0.0 a 172.31.255.255    
+    const privateIPRegex = /^(10\.|192\.168\.|172\.(1[6-9]|2[0-9]|3[01])\.)/;
+
+    if (privateIPRegex.test(ip)) {
+        return true;  
+    }  
+
+    return false;
 }

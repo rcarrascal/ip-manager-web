@@ -46,8 +46,8 @@ function Home() {
    */
   const columns: GridColDef[] = [
     { field: 'ipAddress', headerName: 'Dirección IP', width: 150 },
-    { field: 'name', headerName: 'Descripcion', width: 240 },
     { field: 'state', headerName: 'Estado', width: 160 },
+    { field: 'message', headerName: 'Motivo rechazo', width: 240 },
     {
       field: 'col5',
       headerName: 'Eliminar',
@@ -114,6 +114,7 @@ function Home() {
     }
 
     if (!ipValid(ip)) {
+      console.log(`ip: [${ip}] invalida`);
       notification("warning", "Validación de campos ", "Debe escribir una ip Valida");
       return;
     }
@@ -138,8 +139,9 @@ function Home() {
       })
 
       .catch(error => {
+        console.log("error", error);
         const err = error.message ? error.message : error;
-
+        console.log("err", err);
         notification("danger", "Guardando Ip ", err);
         value.setLoading(false);
       });
@@ -176,27 +178,33 @@ logout("/auth/logout/"+username)
 
   return <div className='principal'><div style={{ height: 400, minWidth: '650px' }}>
     <img alt="Grupo Puerto Cartagena" className="login-img" src={process.env.PUBLIC_URL + '/img/logo-grupo.svg'} ></img>
-    <div style={{   display:"flex", justifyContent:"space-between" }}>
-    <h4>Registro de Ip</h4> 
-    <button onClick={e=>logoutdData()} type="button" className="btn btn-primary btn-sm btn-block"><i title='LOGOUT' class="bi bi-door-open-fill"></i></button>
+    <div style={{   display:"flex", justifyContent:"space-between", padding: "2rem 0 1rem" }}>
+    <h4>Registro de IP</h4> 
+    <button onClick={e=>logoutdData()} type="button" className="btn btn-primary btn-sm btn-block">
+      <i title='LOGOUT' class="bi bi-box-arrow-left"></i>
+        <span> Cerrar sesión</span>
+    </button>
     </div>
-    <br />
     <div className="input-group input-group-lg mb-3">
       <div className="input-group-prepend">
         <span className="input-group-text" style={{ height: "100%" }}>
-
-          <i className="bi bi-person-fill"></i>
+          <i className="bi bi-globe"></i>
         </span>
       </div>
-      <input type="text" onChange={e => setIp(e.target.value)} value={ip} className="form-control" aria-label="Small" placeholder="Ingresar Dirección Ip" />
+      <input type="text" onChange={e => setIp(e.target.value)} value={ip} className="form-control" aria-label="Small" placeholder="Ingresar Dirección IP" />
     </div>
     <div className='btnAction-h'>
-      <button onClick={addIp} style={{ width: "50px", float: 'left', marginRight: '5px' }} type="button" className="btn btn-primary btn-sm btn-block">
-        <i className="bi bi-plus"></i>
-      </button>
-      <button onClick={fetchData} style={{ width: "50px", float: 'left' }} type="button" className="btn btn-primary btn-sm btn-block">
-        <i className="bi bi-arrow-clockwise"></i>
-      </button>
+      <div className='btnContainer'>
+        <button onClick={addIp} type="button" className="btn btn-primary btn-sm btn-block">
+          <i className="bi bi-cloud-arrow-up">
+          </i>
+          <span> Procesar</span>
+        </button>
+        <button onClick={fetchData} type="button" className="btn btn-primary btn-sm btn-block">
+          <i className="bi bi-arrow-clockwise"></i>
+          <span> Actualizar</span>
+        </button>
+      </div>
 
     </div>
     <br />
