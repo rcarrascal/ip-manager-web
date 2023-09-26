@@ -23,39 +23,39 @@ function Login() {
             return;
         }
         value.setLoading(true);
-        const capcha = recaptchaRef.current.execute();
-        const recaptchaValue = recaptchaRef.current.getValue();
+        const capcha = recaptchaRef.current;
 
-        const data = {
-            username: username,
-            password: password
-        };
-        const headers = {
-            'Content-Type': 'application/json'
-        };
-        postData('/auth/login', data, headers)
-            .then(response => {
-                if (response.status &&response.status!='200') {
-                    throw new Error(response.message);
-                }
-                value.setLoading(false);
-                value.handleToken(response.response.token);
-                navigate("/");
-            }).catch(error => {
-                console.log("error", error);
-                const err = error.message ? error.message : 'Usuario y/o contraseña errónea';
-                console.log("error", err);
-                notification("danger", "Login ", err);
-                value.setLoading(false);
-            });
-
-
+        capcha.execute().then( (toke) => {
+            const data = {
+                username: username,
+                password: password,
+                captchaResponse: toke
+            };
+            const headers = {
+                'Content-Type': 'application/json'
+            };
+            postData('http://localhost:3706/auth/login', data, headers)
+                .then(response => {
+                    if (response.status &&response.status!=='200') {
+                        throw new Error(response.message);
+                    }
+                    value.setLoading(false);
+                    value.handleToken(response.response.token);
+                    navigate("/");
+                }).catch(error => {
+                    console.log("error", error);
+                    const err = error.message ? error.message : 'Usuario y/o contraseña errónea';
+                    console.log("error", err);
+                    notification("danger", "Login ", err);
+                    value.setLoading(false);
+                });
+        })
     }
     return <div className="login">
         {<ReCAPTCHA
             ref={recaptchaRef}
             size="invisible"
-            sitekey="Your client site key"
+            sitekey="6LdIkk8oAAAAAEQUyTGw5Q5yhV3BPpIDyJX-8mah"
         //  onChange={onChange}
         />}
         <div className="center">

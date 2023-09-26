@@ -1,4 +1,5 @@
 export interface ipMaster {
     ipAddress: string,
-    name: string
+    message?: string,
+    state?: string,
 }

@@ -8,10 +8,13 @@ package com.gpc.ipmanagerweb.controllers;
 import com.gpc.ipmanagerweb.dto.Answer;
 import com.gpc.ipmanagerweb.dto.AuthenticationRequest;
 import com.gpc.ipmanagerweb.dto.IpManagerResponse;
+import com.gpc.ipmanagerweb.mappers.IpMasterMapper;
+import com.gpc.ipmanagerweb.service.CaptchaValidator;
 import com.gpc.ipmanagerweb.service.client.LoginClient;
 import lombok.extern.slf4j.Slf4j;
+import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,16 +35,30 @@ public class LoginController {
     @Autowired
     private LoginClient loginClient;
 
+    @Autowired
+    private CaptchaValidator capchaValidator;
+
+    private final IpMasterMapper mapper = Mappers.getMapper(IpMasterMapper.class);
+
+    @Value("${google.recaptcha.enabled}")
+    private boolean recaptchaEnabled;
+
     @PostMapping(path = "/login")
-    public IpManagerResponse<Answer> doLogin(@RequestBody AuthenticationRequest user) {
+    public IpManagerResponse<Answer> doLogin(final @RequestBody AuthenticationRequest user) {
         log.info("Iniciando sesión. usuario={}", user.getUsername());
-        IpManagerResponse<Answer> response=loginClient.doLogin(user);
+        if (recaptchaEnabled) {
+            Boolean capcha = capchaValidator.validateCaptcha(user.getCaptchaResponse());
+            if (!capcha) {
+                throw new RuntimeException("Error validando Capcha");
+            }
+        }
+        IpManagerResponse<Answer> response=loginClient.doLogin(mapper.toLoginRequest(user));
         log.info("Mejoras " + response);
         return response;
     }
 
     @GetMapping("/logout/{username}")
-    public String logout(@PathVariable("username") String username) {
+    public String logout(final @PathVariable("username") String username) {
         loginClient.logout(username);
         return "0";
     }

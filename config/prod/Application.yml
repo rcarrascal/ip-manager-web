@@ -6,3 +6,10 @@ feign:
 spring:
   thymeleaf:
     enabled: false
+
+# Configuración Recapchat
+google:
+  recaptcha:
+    secret: 6LdIkk8oAAAAAP_GUlvqyA0ra_Xo93d9GPuiexu6
+    enabled: true
+    score: 0.5

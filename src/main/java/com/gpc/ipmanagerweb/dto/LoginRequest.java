@@ -5,6 +5,7 @@
 package com.gpc.ipmanagerweb.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -13,9 +14,10 @@ import lombok.Data;
  */
 @Data
 @AllArgsConstructor
+@Builder(toBuilder = true)
 public class LoginRequest {
 
-    private String user;
+    private String username;
     private String password;
 
 }

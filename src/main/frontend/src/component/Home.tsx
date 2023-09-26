@@ -4,10 +4,33 @@ import { Button } from '@mui/material';
 import './home.css'
 import { ipMaster } from '../dto/ipMaster';
 import { StorageContext } from '../storage/storageContext';
-import { getIp, postData, deleteData ,logout} from '../api/apiService.ts'
-import { notification, ipValid } from '../util/util'
+import { getIp, postData, deleteData ,logout} from '../api/apiService.ts';
+import { notification, ipValid } from '../util/util';
+import Swal from 'sweetalert2';
 
 import { useNavigate } from 'react-router-dom';
+
+const showConfirmationDialog = (
+    message: string='mensaje',
+    confirmCallBack 
+    ) => {
+  console.log("showConfirmationDialog mssg", message);
+  Swal.fire({
+    title: '¿Estás seguro?',
+    text: message,
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Si',
+    cancelButtonText: 'Cancelar'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      console.log("showConfirmationDialog - then");
+      confirmCallBack();
+    } 
+  })
+}
 
 function Home() {
   const value = useContext(StorageContext);
@@ -21,7 +44,7 @@ function Home() {
    * @returns 
    */
   const renderDetailsButton = (params) => {
-    if(params.row.state.trim() =="ACEPTADO"){
+    if(params.row.state.trim()==="ACEPTADO"){
       return <Fragment></Fragment>
     }
     return (
@@ -32,7 +55,7 @@ function Home() {
           size="small"
           style={{minWidth:"25px"}}
           onClick={() => {
-            eventDelete(params.row.id)
+            eventDelete(params.row)
           }}
         >
           <i className="bi bi-trash3-fill" />
@@ -75,24 +98,22 @@ function Home() {
   const fetchData = useCallback(async () => {
     value.setLoading(true);
 
-    getIp('/ip_master', value.token)
+    await getIp('/ip_master', value.token)
       .then(response => {
-
+        value.setLoading(false);
         if(validate401(response)){
           return;
         }
 
-        if (response.message) {
+        if ( response.status!=='200' && response.error) {
           throw new Error(response.message);
         }
-
         setRows(response.response);
-        value.setLoading(false);
       }).catch(error => {
         if(!validate401(error)){
+        value.setLoading(false);
         const err = error.message ? error.message : error;
         notification("danger", "Listando Ip ", err);
-        value.setLoading(false);
       }
       });
 
@@ -105,6 +126,28 @@ function Home() {
     fetchData();
   }, [fetchData]);
 
+  const postIp = ( data: ipMaster ) => {
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': "Bearer " + value.token
+    };
+
+    postData('/ip_master', data, headers)
+      .then(response => {
+        const message = response.message;
+        console.log(message);
+        if ( response.status!=='200' && response.error) {
+          throw new Error(message);
+        }
+        fetchData();
+        notification("info", "Procesando Ip ", message);
+        setIp("");
+      })
+      .catch(error => {
+        const err = error.message ? error.message : 'Error al procesar la IP';
+        notification("danger", "Procesando Ip ", err);
+      });
+  }
 
   const addIp = () => {
 
@@ -119,32 +162,18 @@ function Home() {
       return;
     }
     const data: ipMaster = {
-      ipAddress: ip,
-      name: ""
+      ipAddress: ip
     }
-    value.setLoading(true);
-    const headers = {
-      'Content-Type': 'application/json',
-      'Authorization': "Bearer " + value.token
-    };
-    postData('/ip_master', data, headers)
-      .then(response => {
-        console.log(response.response);
-        if (response.error) {
-          throw new Error(response.error);
-        }
-        value.setLoading(false);
-        fetchData();
-        setIp("");
-      })
 
-      .catch(error => {
-        console.log("error", error);
-        const err = error.message ? error.message : error;
-        console.log("err", err);
-        notification("danger", "Guardando Ip ", err);
-        value.setLoading(false);
+    const existingIp = rows.find((ip) => ip.ipAddress.trim() === data.ipAddress);
+
+    if (existingIp) {
+      showConfirmationDialog("¿Quiere actualizar la ip? ya se encuentra registrada.", () => {
+        postIp(existingIp);
       });
+    } else {
+      postIp(data);
+    }
 
   };
 
@@ -165,15 +194,25 @@ logout("/auth/logout/"+username)
    * @param val 
    */
   const eventDelete = (val) => {
-    deleteData('/ip_master/' + val,  value.token)
-      .then(e => {
-        validate401(e);
+    showConfirmationDialog(`¿Quieres eliminar la IP ${val.ipAddress}?`, () => {
+      deleteData('/ip_master/' + val.id,  value.token)
+      .then(response => {
+        validate401(response);
+        const message = response.message;
+        console.log(message);
+        if ( response.error) {
+          throw new Error(message);
+        }
+        value.setLoading(false);
         fetchData();
+        notification("info", "Eliminando Ip ", message);
+
       })
       .catch(error => {
-        notification("danger", "Eliminando Ip ", error);
         value.setLoading(false);
+        notification("danger", "Eliminando Ip ", error);
       });
+    })
   }
 
   return <div className='principal'><div style={{ height: 400, minWidth: '650px' }}>
@@ -181,7 +220,7 @@ logout("/auth/logout/"+username)
     <div style={{   display:"flex", justifyContent:"space-between", padding: "2rem 0 1rem" }}>
     <h4>Registro de IP</h4> 
     <button onClick={e=>logoutdData()} type="button" className="btn btn-primary btn-sm btn-block">
-      <i title='LOGOUT' class="bi bi-box-arrow-left"></i>
+      <i title='LOGOUT' className="bi bi-box-arrow-left"></i>
         <span> Cerrar sesión</span>
     </button>
     </div>

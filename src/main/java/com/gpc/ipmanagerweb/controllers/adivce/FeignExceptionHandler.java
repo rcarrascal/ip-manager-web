@@ -30,7 +30,7 @@ public class FeignExceptionHandler {
         if (matcher.find()) {
             return matcher.group(1);
         } else {
-            return errorMessage;
+            return "Error: Comunícate con soporte";
         }
     }
 }

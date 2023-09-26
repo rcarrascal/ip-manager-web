@@ -3,6 +3,7 @@ package com.gpc.ipmanagerweb.service.client;
 import com.gpc.ipmanagerweb.dto.Answer;
 import com.gpc.ipmanagerweb.dto.AuthenticationRequest;
 import com.gpc.ipmanagerweb.dto.IpManagerResponse;
+import com.gpc.ipmanagerweb.dto.LoginRequest;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +17,7 @@ import java.util.concurrent.CompletableFuture;
 public interface LoginClient {
 
     @PostMapping(path = "/login")
-    IpManagerResponse<Answer> doLogin(@RequestBody AuthenticationRequest user);
+    IpManagerResponse<Answer> doLogin(@RequestBody LoginRequest user);
 
     @GetMapping("/logout/{username}")
     CompletableFuture<String> logout(@PathVariable("username") String username);
