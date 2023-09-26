@@ -107,9 +107,6 @@
 							<target>
 								<exec executable="cmd.exe" osfamily="windows" dir="${project.basedir}/src/main/frontend">
 									<arg value="/c"/>
-									<arg value="env-cmd" />
-									<arg value="-e" />
-									<arg value="PROD"/>
 									<arg value="npm" />
 									<arg value="run" />
 									<arg value="build" />
@@ -118,7 +115,7 @@
 
 								<exec executable="/bin/sh" osfamily="unix" dir="${project.basedir}/src/main/frontend">
 									<arg value="-c"/>
-									<arg value="env-cmd -e PROD npm run build --no-cache"/>
+									<arg value="npm run build --no-cache"/>
 								</exec>
 							</target>
 						</configuration>
