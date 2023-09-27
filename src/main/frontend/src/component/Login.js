@@ -34,7 +34,7 @@ function Login() {
             const headers = {
                 'Content-Type': 'application/json'
             };
-            postData('http://localhost:3706/auth/login', data, headers)
+            postData('/auth/login', data, headers)
                 .then(response => {
                     if (response.status &&response.status!=='200') {
                         throw new Error(response.message);
@@ -43,9 +43,7 @@ function Login() {
                     value.handleToken(response.response.token);
                     navigate("/");
                 }).catch(error => {
-                    console.log("error", error);
                     const err = error.message ? error.message : 'Usuario y/o contraseña errónea';
-                    console.log("error", err);
                     notification("danger", "Login ", err);
                     value.setLoading(false);
                 });

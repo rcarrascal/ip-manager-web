@@ -14,7 +14,6 @@ const showConfirmationDialog = (
     message: string='mensaje',
     confirmCallBack 
     ) => {
-  console.log("showConfirmationDialog mssg", message);
   Swal.fire({
     title: '¿Estás seguro?',
     text: message,
@@ -26,7 +25,6 @@ const showConfirmationDialog = (
     cancelButtonText: 'Cancelar'
   }).then((result) => {
     if (result.isConfirmed) {
-      console.log("showConfirmationDialog - then");
       confirmCallBack();
     } 
   })
@@ -131,17 +129,18 @@ function Home() {
       'Content-Type': 'application/json',
       'Authorization': "Bearer " + value.token
     };
-
     postData('/ip_master', data, headers)
       .then(response => {
         const message = response.message;
-        console.log(message);
         if ( response.status!=='200' && response.error) {
           throw new Error(message);
         }
+        if (response.status!=='200' && response.message) {
+          return notification("warning", "Procesando Ip ", message);
+        }
         fetchData();
-        notification("info", "Procesando Ip ", message);
         setIp("");
+        notification("info", "Procesando Ip ", message);
       })
       .catch(error => {
         const err = error.message ? error.message : 'Error al procesar la IP';
@@ -157,7 +156,6 @@ function Home() {
     }
 
     if (!ipValid(ip)) {
-      console.log(`ip: [${ip}] invalida`);
       notification("warning", "Validación de campos ", "Debe escribir una ip Valida");
       return;
     }
@@ -199,7 +197,6 @@ logout("/auth/logout/"+username)
       .then(response => {
         validate401(response);
         const message = response.message;
-        console.log(message);
         if ( response.error) {
           throw new Error(message);
         }

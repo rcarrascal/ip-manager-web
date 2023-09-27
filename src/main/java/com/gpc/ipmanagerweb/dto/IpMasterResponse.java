@@ -13,7 +13,7 @@ public class IpMasterResponse {
 
     private String ipAddress;
 
-    private String name;
+    private String message;
 
     private String color;
 
