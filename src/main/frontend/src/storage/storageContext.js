@@ -56,6 +56,7 @@ export const StorageProvider = (props) => {
             storage,
             token,
             externalSiteKey,
+            setExternalSiteKey,
             handleToken,
             setLoading,
             setUserInfo, 

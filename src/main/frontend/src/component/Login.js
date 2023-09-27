@@ -5,7 +5,7 @@ import { notification } from '../util/util'
 import { useNavigate } from 'react-router-dom';
 import ReCAPTCHA from "react-google-recaptcha";
 
-import { postData } from '../api/apiService.ts'
+import { postData, getData } from '../api/apiService.ts'
 function Login() {
     const value = useContext(StorageContext);
     const { username, password } = value.storage.user;
@@ -15,7 +15,18 @@ function Login() {
     useEffect(() => {
         value.setLoading(false)
         value.setClearUser();
-    }, []);
+        const fetchExternalConfig = async () => {
+          try {
+            const response = await fetch("/config/external_siteKey");
+            const data = await response.text();
+            value.setExternalSiteKey(data);
+          } catch (error) {
+            notification("danger", "Error al obtener la configuración", error.message);
+          }
+        };
+    
+        fetchExternalConfig();
+      }, []);
 
 
     const login = () => {
@@ -56,6 +67,7 @@ function Login() {
                 });
         })
     }
+    console.log(value.externalSiteKey)
     return <div className="login">
         {<ReCAPTCHA
             ref={recaptchaRef}

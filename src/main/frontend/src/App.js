@@ -15,20 +15,7 @@ import { getData } from './api/apiService.ts';
 function App() {
   const value = useContext(StorageContext);
 
-  useEffect(() => {
 
-    getData("/config/external_siteKey")
-    .then(response => {
-        response.text()
-        .then( text => {
-            value.setExternalSiteKey(text);
-        })
-    })
-    .catch( error => {
-        notification("danger", "Error al obtener la configuración", error.message);
-    } )
-
-}, []);
 
 
   return (
