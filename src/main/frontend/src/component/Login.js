@@ -5,7 +5,7 @@ import { notification } from '../util/util'
 import { useNavigate } from 'react-router-dom';
 import ReCAPTCHA from "react-google-recaptcha";
 
-import { postData, getData } from '../api/apiService.ts'
+import { postData } from '../api/apiService.ts'
 function Login() {
     const value = useContext(StorageContext);
     const { username, password } = value.storage.user;

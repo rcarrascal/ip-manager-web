@@ -136,9 +136,6 @@ function Home() {
         if ( response.status!=='200' && response.error) {
           throw new Error(message);
         }
-        if (response.status!=='200' && response.message) {
-          return notification("warning", "Procesando Ip ", message);
-        }
         fetchData();
         setIp("");
         notification("info", "Procesando Ip ", message);
