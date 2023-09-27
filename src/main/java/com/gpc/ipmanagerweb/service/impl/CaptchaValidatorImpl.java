@@ -20,8 +20,9 @@ import java.util.Optional;
 @Slf4j
 @Service
 public class CaptchaValidatorImpl implements CaptchaValidator {
-    
-    private static final String GOOGLE_RECAPTCHA_ENDPOINT = "https://www.google.com/recaptcha/api/siteverify";
+
+    @Value("${google.recaptcha.endpoint}")
+    private String recaptchaEndpoint;
 
     @Value("${google.recaptcha.secret}")
     private String recaptchaSecret;
@@ -37,7 +38,7 @@ public class CaptchaValidatorImpl implements CaptchaValidator {
         requestMap.add("secret", recaptchaSecret);
         requestMap.add("response", captcha);
 
-        Optional<CaptchaResponse> apiResponse = Optional.ofNullable(restTemplate.postForObject(GOOGLE_RECAPTCHA_ENDPOINT, requestMap, CaptchaResponse.class));
+        Optional<CaptchaResponse> apiResponse = Optional.ofNullable(restTemplate.postForObject(recaptchaEndpoint, requestMap, CaptchaResponse.class));
         if (!apiResponse.isPresent()) {
             return false;
         }

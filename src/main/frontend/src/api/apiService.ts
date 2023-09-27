@@ -1,5 +1,4 @@
-
-export async function getIp(url = '', token = '') {
+export async function getData(url = '', token = '') {
     const timeout = 10000; // 10 segundos (ajusta el valor según tus necesidades)
   
     const controller = new AbortController();

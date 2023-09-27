@@ -4,7 +4,7 @@ import { Button } from '@mui/material';
 import './home.css'
 import { ipMaster } from '../dto/ipMaster';
 import { StorageContext } from '../storage/storageContext';
-import { getIp, postData, deleteData ,logout} from '../api/apiService.ts';
+import { getData, postData, deleteData ,logout} from '../api/apiService.ts';
 import { notification, ipValid } from '../util/util';
 import Swal from 'sweetalert2';
 
@@ -92,11 +92,12 @@ function Home() {
       return false;
     
   }
+  
 
   const fetchData = useCallback(async () => {
     value.setLoading(true);
 
-    await getIp('/ip_master', value.token)
+    await getData('/ip_master', value.token)
       .then(response => {
         value.setLoading(false);
         if(validate401(response)){

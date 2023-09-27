@@ -1,5 +1,5 @@
 import './login.css'
-import { useContext, createRef } from 'react';
+import { useContext, createRef, useEffect } from 'react';
 import { StorageContext } from '../storage/storageContext';
 import { notification } from '../util/util'
 import { useNavigate } from 'react-router-dom';
@@ -11,6 +11,13 @@ function Login() {
     const { username, password } = value.storage.user;
     const navigate = useNavigate();
     const recaptchaRef = createRef();
+
+    useEffect(() => {
+        value.setLoading(false)
+        value.setClearUser();
+    }, []);
+
+
     const login = () => {
         if (username === "") {
             notification("warning", "Validación de campos ", "Usuario no puede estar vacia");
@@ -53,7 +60,7 @@ function Login() {
         {<ReCAPTCHA
             ref={recaptchaRef}
             size="invisible"
-            sitekey="6LdIkk8oAAAAAEQUyTGw5Q5yhV3BPpIDyJX-8mah"
+            sitekey={value.externalSiteKey}
         //  onChange={onChange}
         />}
         <div className="center">
