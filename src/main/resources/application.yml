@@ -1,0 +1,18 @@
+feign:
+  client:
+    url:
+      login: https://ip-manager-service-test.puertocartagena.com:3706/auth
+      ipManager: https://ip-manager-service-test.puertocartagena.com:3706/ip_master
+
+spring:
+  thymeleaf:
+    enabled: false
+
+# Configuración Recapchat
+google:
+  recaptcha:
+    siteKey: 6LdIkk8oAAAAAEQUyTGw5Q5yhV3BPpIDyJX-8mah
+    secret: 6LdIkk8oAAAAAP_GUlvqyA0ra_Xo93d9GPuiexu6
+    enabled: false
+    score: 0.5
+    endpoint: https://www.google.com/recaptcha/api/siteverify
