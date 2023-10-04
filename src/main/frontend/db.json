@@ -1,0 +1,19 @@
+{
+  "ip_master": [
+    {
+      "id": 1,
+      "ipAddress": "http://delfin.puertocartagena.com:3706/",
+      "description": "description"
+    },
+    {
+      "id": 2,
+      "ipAddress": "http://delfin.puertocartagena.com:3706/",
+      "description": "description"
+    },
+    {
+      "ipAddress": "asd",
+      "description": "sd",
+      "id": 3
+    }
+  ]
+}
