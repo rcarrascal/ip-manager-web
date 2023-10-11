@@ -67,13 +67,14 @@ function Login() {
                 });
         })
     }
-    console.log(value.externalSiteKey)
+    if(!value.externalSiteKey) {    
+        return (<div> Cargando configuraciones </div>)
+    };
     return <div className="login">
         {<ReCAPTCHA
             ref={recaptchaRef}
             size="invisible"
             sitekey={value.externalSiteKey}
-        //  onChange={onChange}
         />}
         <div className="center">
             <img alt="Grupo Puerto Cartagena" className="login-img" src={process.env.PUBLIC_URL + '/img/logo-grupo.svg'} ></img>
