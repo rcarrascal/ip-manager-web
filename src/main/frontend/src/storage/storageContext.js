@@ -37,6 +37,7 @@ export const StorageProvider = (props) => {
         localStorage.setItem('storage', null);
         setStorage({
             ...storage,
+            loading: false,
             user: { username: '', password: '' }
         });
     }
