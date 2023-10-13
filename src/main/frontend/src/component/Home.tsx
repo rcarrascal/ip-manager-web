@@ -1,6 +1,6 @@
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import React, { useState, useEffect, useCallback, useContext, Fragment } from 'react';
-import { Button } from '@mui/material';
+import { Button, Tooltip } from '@mui/material';
 import './home.css'
 import { ipMaster } from '../dto/ipMaster';
 import { StorageContext } from '../storage/storageContext';
@@ -68,7 +68,18 @@ function Home() {
   const columns: GridColDef[] = [
     { field: 'ipAddress', headerName: 'Dirección IP', width: 150 },
     { field: 'state', headerName: 'Estado', width: 160 },
-    { field: 'message', headerName: 'Motivo rechazo', width: 240 },
+    { 
+      field: 'message',
+      headerName: 'Motivo rechazo', 
+      width: 240, 
+      renderCell: (params) => (
+          <Tooltip title={params.value}>      
+          <div style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>        
+            {params.value}      
+          </div>
+        </Tooltip>
+      ), 
+    },
     {
       field: 'col5',
       headerName: 'Eliminar',
@@ -85,7 +96,7 @@ function Home() {
         localStorage.clear();
         value.handleToken(null);
         value.setClearUser();
-        notification("danger", "Listando Ip ","Su token no es valido. Favor de logearse nuevamente");
+        notification("danger", "Listando IPs","Su token no es valido. Favor de logearse nuevamente");
         navigate("/login");
         return true;
       }
@@ -112,7 +123,7 @@ function Home() {
         if(!validate401(error)){
         value.setLoading(false);
         const err = error.message ? error.message : error;
-        notification("danger", "Listando Ip ", err);
+        notification("danger", "Listando IPs ", err);
       }
       });
 
@@ -138,23 +149,23 @@ function Home() {
         }
         fetchData();
         setIp("");
-        notification("info", "Procesando Ip ", message);
+        notification("info", "Procesando IP ", message);
       })
       .catch(error => {
         const err = error.message ? error.message : 'Error al procesar la IP';
-        notification("danger", "Procesando Ip ", err);
+        notification("danger", "Procesando IP ", err);
       });
   }
 
   const addIp = () => {
 
     if (ip === "") {
-      notification("warning", "Validación de campos ", "Ip no puede estar vacia");
+      notification("warning", "Validación de campos ", "IP no puede estar vacia");
       return;
     }
 
     if (!ipValid(ip)) {
-      notification("warning", "Validación de campos ", "Debe escribir una ip Valida");
+      notification("warning", "Solo IPs públicas ", "Debe escribir una IP válida");
       return;
     }
     const data: ipMaster = {
@@ -164,7 +175,7 @@ function Home() {
     const existingIp = rows.find((ip) => ip.ipAddress.trim() === data.ipAddress);
 
     if (existingIp) {
-      showConfirmationDialog("¿Quiere actualizar la ip? ya se encuentra registrada.", () => {
+      showConfirmationDialog(`¿Quieres cambiar el estado de la IP ${ip} a PENDIENTE?`, () => {
         postIp(existingIp);
       });
     } else {
@@ -200,7 +211,7 @@ logout("/auth/logout/"+username)
         }
         value.setLoading(false);
         fetchData();
-        notification("info", "Eliminando Ip ", message);
+        notification("info", "Eliminando IP ", message);
 
       })
       .catch(error => {
