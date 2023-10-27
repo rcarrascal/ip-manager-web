@@ -22,7 +22,9 @@ const showConfirmationDialog = (
     confirmButtonColor: '#3085d6',
     cancelButtonColor: '#d33',
     confirmButtonText: 'Si',
-    cancelButtonText: 'Cancelar'
+    cancelButtonText: 'Cancelar',
+    reverseButtons: true,
+    focusCancel: true
   }).then((result) => {
     if (result.isConfirmed) {
       confirmCallBack();
@@ -70,7 +72,7 @@ function Home() {
     { field: 'state', headerName: 'Estado', width: 160 },
     { 
       field: 'message',
-      headerName: 'Motivo rechazo', 
+      headerName: 'Motivo Rechazo', 
       width: 240, 
       renderCell: (params) => (
           <Tooltip title={params.value}>      
@@ -185,7 +187,7 @@ function Home() {
   };
 
 const logoutdData=()=>{
-  const username = value.storage.user.username;;
+  const username = value.storage.user.username;
 logout("/auth/logout/"+username)
 .then(response =>{
 
@@ -220,38 +222,72 @@ logout("/auth/logout/"+username)
       });
     })
   }
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    await addIp();
+  };
 
   return <div className='principal'><div style={{ height: 400, minWidth: '650px' }}>
-    <img alt="Grupo Puerto Cartagena" className="login-img" src={process.env.PUBLIC_URL + '/img/logo-grupo.svg'} ></img>
+    <table className="header">
+    <tr>
+        <td className='logoSprc'>
+          <img src={process.env.PUBLIC_URL + '/img/Logo-sprc.png'} alt="Logo SPC" ></img>
+        </td>
+        <td className=''>
+
+        </td>
+        <td className='logoContecar'>
+          <img src={process.env.PUBLIC_URL + '/img/Logo-cnr.jpg'} alt="Logo cnr" ></img>
+        </td>
+    </tr>
+    <tr>
+        <td className='logoVigilado'>
+          <img src={process.env.PUBLIC_URL + '/img/Logo-vigilado.png'} className="logoVigilado" alt="Logo vigilado" ></img>
+        </td>
+        <td className='titlePage'>
+          Solicitar Autorización de IPs Públicas
+        </td>
+    </tr>
+    </table>
     <div style={{   display:"flex", justifyContent:"space-between", padding: "2rem 0 1rem" }}>
     <h4>Registro de IP</h4> 
-    <button onClick={e=>logoutdData()} type="button" className="btn btn-primary btn-sm btn-block">
-      <i title='LOGOUT' className="bi bi-box-arrow-left"></i>
-        <span> Cerrar sesión</span>
-    </button>
+    <div className="dropdown">
+      <button className="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+      <i title='USER' className="bi bi-person-fill"> {value.storage.user.username}</i>
+      </button>
+      <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+        <li>
+          <a className="dropdown-item" href="#" onClick={e=>logoutdData()}>
+            <i title='LOGOUT' className="bi bi-box-arrow-left"></i> Cerrar sesión
+          </a>
+        </li>
+      </ul>
     </div>
-    <div className="input-group input-group-lg mb-3">
-      <div className="input-group-prepend">
-        <span className="input-group-text" style={{ height: "100%" }}>
-          <i className="bi bi-globe"></i>
-        </span>
+    </div>
+    <form onSubmit={handleSubmit}>
+      <div className="input-group input-group-lg mb-3">
+        <div className="input-group-prepend">
+          <span className="input-group-text" style={{ height: "100%" }}>
+            <i className="bi bi-globe"></i>
+          </span>
+        </div>
+        <input type="text" onChange={e => setIp(e.target.value)} value={ip} className="form-control" aria-label="Small" placeholder="Ingresar Dirección IP" />
       </div>
-      <input type="text" onChange={e => setIp(e.target.value)} value={ip} className="form-control" aria-label="Small" placeholder="Ingresar Dirección IP" />
-    </div>
-    <div className='btnAction-h'>
-      <div className='btnContainer'>
-        <button onClick={addIp} type="button" className="btn btn-primary btn-sm btn-block">
-          <i className="bi bi-cloud-arrow-up">
-          </i>
-          <span> Procesar</span>
-        </button>
-        <button onClick={fetchData} type="button" className="btn btn-primary btn-sm btn-block">
-          <i className="bi bi-arrow-clockwise"></i>
-          <span> Actualizar</span>
-        </button>
+      <div className='btnAction-h'>
+        <div className='btnContainer'>
+          <button onClick={addIp} type="submit" className="btn btn-primary btn-sm btn-block">
+            <i className="bi bi-cloud-arrow-up">
+            </i>
+            <span> Guardar</span>
+          </button>
+          <button onClick={fetchData} type="button" className="btn btn-secondary btn-sm btn-block">
+            <i className="bi bi-arrow-clockwise"></i>
+            <span> Refrescar</span>
+          </button>
+        </div>
       </div>
-
-    </div>
+    {/* <button type="submit">Login</button> */}
+  </form>
     <br />
     <DataGrid
       rows={rows}

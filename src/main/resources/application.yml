@@ -8,11 +8,14 @@ spring:
   thymeleaf:
     enabled: false
 
+server:
+  port: 8080
+
 # Configuración Recapchat
 google:
   recaptcha:
     siteKey: 6Ldcr5goAAAAAHXe6ZrDKReJojcqZ0ZBjfL3a6bL
     secret: 6Ldcr5goAAAAANYYMoKqjgWbASymh7m1zG6X1MUS
-    enabled: false
+    enabled: true
     score: 0.5
     endpoint: https://www.google.com/recaptcha/api/siteverify
