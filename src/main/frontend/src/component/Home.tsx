@@ -1,6 +1,6 @@
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import React, { useState, useEffect, useCallback, useContext, Fragment } from 'react';
-import { Button } from '@mui/material';
+import { Button, Tooltip } from '@mui/material';
 import './home.css'
 import { ipMaster } from '../dto/ipMaster';
 import { StorageContext } from '../storage/storageContext';
@@ -22,7 +22,9 @@ const showConfirmationDialog = (
     confirmButtonColor: '#3085d6',
     cancelButtonColor: '#d33',
     confirmButtonText: 'Si',
-    cancelButtonText: 'Cancelar'
+    cancelButtonText: 'Cancelar',
+    reverseButtons: true,
+    focusCancel: true
   }).then((result) => {
     if (result.isConfirmed) {
       confirmCallBack();
@@ -68,7 +70,18 @@ function Home() {
   const columns: GridColDef[] = [
     { field: 'ipAddress', headerName: 'Dirección IP', width: 150 },
     { field: 'state', headerName: 'Estado', width: 160 },
-    { field: 'message', headerName: 'Motivo rechazo', width: 240 },
+    { 
+      field: 'message',
+      headerName: 'Motivo Rechazo', 
+      width: 240, 
+      renderCell: (params) => (
+          <Tooltip title={params.value}>      
+          <div style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>        
+            {params.value}      
+          </div>
+        </Tooltip>
+      ), 
+    },
     {
       field: 'col5',
       headerName: 'Eliminar',
@@ -85,7 +98,7 @@ function Home() {
         localStorage.clear();
         value.handleToken(null);
         value.setClearUser();
-        notification("danger", "Listando Ip ","Su token no es valido. Favor de logearse nuevamente");
+        notification("danger", "Listando IPs","Su token no es valido. Favor de logearse nuevamente");
         navigate("/login");
         return true;
       }
@@ -112,7 +125,7 @@ function Home() {
         if(!validate401(error)){
         value.setLoading(false);
         const err = error.message ? error.message : error;
-        notification("danger", "Listando Ip ", err);
+        notification("danger", "Listando IPs ", err);
       }
       });
 
@@ -138,23 +151,23 @@ function Home() {
         }
         fetchData();
         setIp("");
-        notification("info", "Procesando Ip ", message);
+        notification("info", "Procesando IP ", message);
       })
       .catch(error => {
         const err = error.message ? error.message : 'Error al procesar la IP';
-        notification("danger", "Procesando Ip ", err);
+        notification("danger", "Procesando IP ", err);
       });
   }
 
   const addIp = () => {
 
     if (ip === "") {
-      notification("warning", "Validación de campos ", "Ip no puede estar vacia");
+      notification("warning", "Validación de campos ", "IP no puede estar vacia");
       return;
     }
 
     if (!ipValid(ip)) {
-      notification("warning", "Validación de campos ", "Debe escribir una ip Valida");
+      notification("warning", "Solo IPs públicas ", "Debe escribir una IP válida");
       return;
     }
     const data: ipMaster = {
@@ -164,7 +177,7 @@ function Home() {
     const existingIp = rows.find((ip) => ip.ipAddress.trim() === data.ipAddress);
 
     if (existingIp) {
-      showConfirmationDialog("¿Quiere actualizar la ip? ya se encuentra registrada.", () => {
+      showConfirmationDialog(`¿Quieres cambiar el estado de la IP ${ip} a PENDIENTE?`, () => {
         postIp(existingIp);
       });
     } else {
@@ -174,7 +187,7 @@ function Home() {
   };
 
 const logoutdData=()=>{
-  const username = value.storage.user.username;;
+  const username = value.storage.user.username;
 logout("/auth/logout/"+username)
 .then(response =>{
 
@@ -200,7 +213,7 @@ logout("/auth/logout/"+username)
         }
         value.setLoading(false);
         fetchData();
-        notification("info", "Eliminando Ip ", message);
+        notification("info", "Eliminando IP ", message);
 
       })
       .catch(error => {
@@ -209,38 +222,72 @@ logout("/auth/logout/"+username)
       });
     })
   }
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    await addIp();
+  };
 
   return <div className='principal'><div style={{ height: 400, minWidth: '650px' }}>
-    <img alt="Grupo Puerto Cartagena" className="login-img" src={process.env.PUBLIC_URL + '/img/logo-grupo.svg'} ></img>
+    <table className="header">
+    <tr>
+        <td className='logoSprc'>
+          <img src={process.env.PUBLIC_URL + '/img/Logo-sprc.png'} alt="Logo SPC" ></img>
+        </td>
+        <td className=''>
+
+        </td>
+        <td className='logoContecar'>
+          <img src={process.env.PUBLIC_URL + '/img/Logo-cnr.jpg'} alt="Logo cnr" ></img>
+        </td>
+    </tr>
+    <tr>
+        <td className='logoVigilado'>
+          <img src={process.env.PUBLIC_URL + '/img/Logo-vigilado.png'} className="logoVigilado" alt="Logo vigilado" ></img>
+        </td>
+        <td className='titlePage'>
+          Solicitar Autorización de IPs Públicas
+        </td>
+    </tr>
+    </table>
     <div style={{   display:"flex", justifyContent:"space-between", padding: "2rem 0 1rem" }}>
     <h4>Registro de IP</h4> 
-    <button onClick={e=>logoutdData()} type="button" className="btn btn-primary btn-sm btn-block">
-      <i title='LOGOUT' className="bi bi-box-arrow-left"></i>
-        <span> Cerrar sesión</span>
-    </button>
+    <div className="dropdown">
+      <button className="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+      <i title='USER' className="bi bi-person-fill"> {value.storage.user.username}</i>
+      </button>
+      <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+        <li>
+          <a className="dropdown-item" href="#" onClick={e=>logoutdData()}>
+            <i title='LOGOUT' className="bi bi-box-arrow-left"></i> Cerrar sesión
+          </a>
+        </li>
+      </ul>
     </div>
-    <div className="input-group input-group-lg mb-3">
-      <div className="input-group-prepend">
-        <span className="input-group-text" style={{ height: "100%" }}>
-          <i className="bi bi-globe"></i>
-        </span>
+    </div>
+    <form onSubmit={handleSubmit}>
+      <div className="input-group input-group-lg mb-3">
+        <div className="input-group-prepend">
+          <span className="input-group-text" style={{ height: "100%" }}>
+            <i className="bi bi-globe"></i>
+          </span>
+        </div>
+        <input type="text" onChange={e => setIp(e.target.value)} value={ip} className="form-control" aria-label="Small" placeholder="Ingresar Dirección IP" />
       </div>
-      <input type="text" onChange={e => setIp(e.target.value)} value={ip} className="form-control" aria-label="Small" placeholder="Ingresar Dirección IP" />
-    </div>
-    <div className='btnAction-h'>
-      <div className='btnContainer'>
-        <button onClick={addIp} type="button" className="btn btn-primary btn-sm btn-block">
-          <i className="bi bi-cloud-arrow-up">
-          </i>
-          <span> Procesar</span>
-        </button>
-        <button onClick={fetchData} type="button" className="btn btn-primary btn-sm btn-block">
-          <i className="bi bi-arrow-clockwise"></i>
-          <span> Actualizar</span>
-        </button>
+      <div className='btnAction-h'>
+        <div className='btnContainer'>
+          <button onClick={addIp} type="submit" className="btn btn-primary btn-sm btn-block">
+            <i className="bi bi-cloud-arrow-up">
+            </i>
+            <span> Guardar</span>
+          </button>
+          <button onClick={fetchData} type="button" className="btn btn-secondary btn-sm btn-block">
+            <i className="bi bi-arrow-clockwise"></i>
+            <span> Refrescar</span>
+          </button>
+        </div>
       </div>
-
-    </div>
+    {/* <button type="submit">Login</button> */}
+  </form>
     <br />
     <DataGrid
       rows={rows}
