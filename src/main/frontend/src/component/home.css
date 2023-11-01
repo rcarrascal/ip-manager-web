@@ -3,11 +3,39 @@
     display: flex;
     justify-content: end;
 }
-
 .principal {
     display: flex;
+    max-width: 67.5em;
     justify-content: center;
     align-items: flex-start;
-    height: 100vh;
-    padding-top: 120px;
+    margin-inline: auto;
+    padding-inline: 2.5rem;
+    gap: 2rem;
+    padding-top: 2rem;
+}
+.header{
+  margin: 0 auto !important;
+}
+.logoSprc {
+  vertical-align: bottom;
+  width: 20%;
+}
+
+.logoVigilado {
+  width: 10rem;
+  vertical-align: bottom;
+  padding-top: 15px !important;
+}
+
+.logoContecar {
+  padding-right: 40px;
+  width: 20%;
+  vertical-align: bottom;
+  text-align: right;
+}
+.titlePage{
+  text-align: center !important;
+  color: #0079ba !important;
+  font-weight: bold;
+  font-size: 1.2rem;
 }
