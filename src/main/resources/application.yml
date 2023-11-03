@@ -14,8 +14,8 @@ server:
 # Configuración Recapchat
 google:
   recaptcha:
-    siteKey: 6Ldcr5goAAAAAHXe6ZrDKReJojcqZ0ZBjfL3a6bL
-    secret: 6Ldcr5goAAAAANYYMoKqjgWbASymh7m1zG6X1MUS
+    siteKey: 6LdudvIoAAAAADmTXgpAvR_7B_ehUayfxmM7_kA1
+    secret: 6LdudvIoAAAAAKvtdOR9F8g2A0Dm4AFKjInVGOmp
     enabled: true
     score: 0.5
     endpoint: https://www.google.com/recaptcha/api/siteverify
