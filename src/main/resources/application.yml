@@ -16,6 +16,6 @@ google:
   recaptcha:
     siteKey: 6LdudvIoAAAAADmTXgpAvR_7B_ehUayfxmM7_kA1
     secret: 6LdudvIoAAAAAKvtdOR9F8g2A0Dm4AFKjInVGOmp
-    enabled: true
+    enabled: false
     score: 0.5
     endpoint: https://www.google.com/recaptcha/api/siteverify
