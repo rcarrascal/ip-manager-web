@@ -61,15 +61,16 @@ function Login() {
         };
         postData('/auth/login', data, headers)
             .then(response => {
-                if (response.status &&response.status!=='200') {
-                    throw new Error(response.message);
+                if (response.status && response.status !== '200') {
+                    throw response;
                 }
                 value.setLoading(false);
                 value.handleToken(response.response.token);
                 navigate("/");
             }).catch(error => {
-                const err = error.message ? error.message : 'Usuario y/o contraseña errónea';
-                notification("danger", "Login ", err);
+                const errMessage = error.message ? error.message : 'Error desconocido, comunicarse con soporte por favor';
+                const title = error.status.startsWith('406') ? 'Google Recaptcha ' : 'Login ';
+                notification("danger", title, errMessage);
                 value.setLoading(false);
             });
     }
@@ -126,7 +127,7 @@ function Login() {
                     <input type="password" onChange={value.setUserInfo("password")} autoComplete="off" value={password} className="form-control" aria-label="Small" placeholder="Ingresar Password" />
                 </div>
                 <div className='btnAction'>
-                    <button onClick={login} style={{ width: "100%" }} type="submit" className="btn btn-primary btn-sm btn-block">
+                    <button style={{ width: "100%" }} type="submit" className="btn btn-primary btn-sm btn-block">
                         Login
                     </button>
                 </div>
