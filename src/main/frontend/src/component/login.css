@@ -23,6 +23,7 @@
     height: 100vh;
 
 }
+
 .header{
     margin: 0 auto !important;
 }
@@ -32,15 +33,14 @@ width: 20%;
 }
 
 .logoContecar {
-padding-right: 40px;
 width: 20%;
 vertical-align: bottom;
 text-align: right;
 }
-.titlePage{
+.titleLogin{
 text-align: center !important;
 color: #0079ba !important;
 font-weight: bold;
-font-size: 1.2rem;
+font-size: 2rem;
 padding-top: 1.5rem;
 }

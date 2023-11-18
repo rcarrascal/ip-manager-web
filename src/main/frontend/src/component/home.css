@@ -18,24 +18,24 @@
 }
 .logoSprc {
   vertical-align: bottom;
-  width: 20%;
 }
 
 .logoVigilado {
-  width: 10rem;
   vertical-align: bottom;
-  padding-top: 15px !important;
+  padding-top: 0.3rem !important;
+  text-align: left;
 }
 
 .logoContecar {
-  padding-right: 40px;
-  width: 20%;
   vertical-align: bottom;
   text-align: right;
+}
+img{
+  width: 9rem;
 }
 .titlePage{
   text-align: center !important;
   color: #0079ba !important;
   font-weight: bold;
-  font-size: 1.2rem;
+  font-size: 1.6rem;
 }

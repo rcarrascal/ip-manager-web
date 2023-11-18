@@ -17,7 +17,8 @@ function App() {
     <LoadingOverlay
       active={value.storage.loading}
       spinner
-      text='Cargando Pagina...'
+      text='Cargando Página...'
+      className={`overlay-fullscreen ${value.page}`}
     >
       <div className="App">
         <ReactNotifications />

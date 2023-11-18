@@ -7,6 +7,7 @@ export const StorageProvider = (props) => {
     const [storage, setStorage] = useState(localStorage.getItem("storage") === null ? storageData : JSON.parse(localStorage.getItem("storage")));
     const [token, setToken] = useState(localStorage.getItem("token") === null ? null : localStorage.getItem("token"));
     const [externalSiteKey, setExternalSiteKey] = useState("");
+    const [page, setPage] = useState("");
 
     /**
      * Cada vez que se ejecute un cambio en cualquier dato del storage
@@ -59,9 +60,11 @@ export const StorageProvider = (props) => {
             externalSiteKey,
             setExternalSiteKey,
             handleToken,
+            page,
             setLoading,
             setUserInfo, 
-            setClearUser
+            setClearUser,
+            setPage
         }}
     >
         {props.children}
