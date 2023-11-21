@@ -68,12 +68,12 @@ function Home() {
    * Definición de la tabla de Ip
    */
   const columns: GridColDef[] = [
-    { field: 'ipAddress', headerName: 'Dirección IP', width: 110, hideSortIcons: false, disableColumnMenu: true  },
-    { field: 'state', headerName: 'Estado', width: 110, hideSortIcons: false, disableColumnMenu: true },
+    { field: 'ipAddress', headerName: 'Dirección IP', width: 110, hideSortIcons: false, disableColumnMenu: true, headerClassName: 'dataGrid-header',  },
+    { field: 'state', headerName: 'Estado', width: 110, hideSortIcons: false, disableColumnMenu: true, headerClassName: 'dataGrid-header', },
     { 
       field: 'message',
       headerName: 'Motivo Rechazo', 
-      width: 425, 
+      width: 422, 
       renderCell: (params) => (
           <Tooltip title={params.value}>      
           <div style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>        
@@ -81,14 +81,14 @@ function Home() {
           </div>
         </Tooltip>
       ),
-      hideSortIcons: false, disableColumnMenu: true
+      hideSortIcons: false, disableColumnMenu: true, headerClassName: 'dataGrid-header',
     },
     {
       field: 'col5',
       headerName: 'Eliminar',
-      width: 72,
+      width: 82,
       renderCell: renderDetailsButton, 
-      hideSortIcons: true, disableColumnMenu: true
+      hideSortIcons: true, disableColumnMenu: true, headerClassName: 'dataGrid-header',
     },
   ];
 
@@ -297,7 +297,16 @@ logout("/auth/logout/"+username)
       columns={columns}
       pageSize={5}
       rowsPerPageOptions={[5]}
-
+      initialState={{
+        sorting: {
+          sortModel: [
+            {
+              field: 'state',
+              sort: 'desc',
+            }
+          ]
+        }
+      }}
     />
   </div></div >
 }
