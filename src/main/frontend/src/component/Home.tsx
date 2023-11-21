@@ -22,7 +22,7 @@ const showConfirmationDialog = (
     confirmButtonColor: '#3085d6',
     cancelButtonColor: '#d33',
     confirmButtonText: 'Si',
-    cancelButtonText: 'Cancelar',
+    cancelButtonText: 'No',
     reverseButtons: true,
     focusCancel: true
   }).then((result) => {
@@ -68,25 +68,27 @@ function Home() {
    * Definición de la tabla de Ip
    */
   const columns: GridColDef[] = [
-    { field: 'ipAddress', headerName: 'Dirección IP', width: 150 },
-    { field: 'state', headerName: 'Estado', width: 160 },
+    { field: 'ipAddress', headerName: 'Dirección IP', width: 110, hideSortIcons: false, disableColumnMenu: true, headerClassName: 'dataGrid-header',  },
+    { field: 'state', headerName: 'Estado', width: 110, hideSortIcons: false, disableColumnMenu: true, headerClassName: 'dataGrid-header', },
     { 
       field: 'message',
       headerName: 'Motivo Rechazo', 
-      width: 240, 
+      width: 422, 
       renderCell: (params) => (
           <Tooltip title={params.value}>      
           <div style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>        
             {params.value}      
           </div>
         </Tooltip>
-      ), 
+      ),
+      hideSortIcons: false, disableColumnMenu: true, headerClassName: 'dataGrid-header',
     },
     {
       field: 'col5',
       headerName: 'Eliminar',
-      width: 70,
-      renderCell: renderDetailsButton
+      width: 82,
+      renderCell: renderDetailsButton, 
+      hideSortIcons: true, disableColumnMenu: true, headerClassName: 'dataGrid-header',
     },
   ];
 
@@ -135,6 +137,7 @@ function Home() {
    * Metodo que se ejecuta cada vez que se actualiza el estado.
    */
   useEffect(() => {
+    value.setPage("home");
     fetchData();
   }, [fetchData]);
 
@@ -146,7 +149,7 @@ function Home() {
     postData('/ip_master', data, headers)
       .then(response => {
         const message = response.message;
-        if ( response.status!=='200' && response.error) {
+        if ( response.status && response.status!=='200' ) {
           throw new Error(message);
         }
         fetchData();
@@ -208,7 +211,7 @@ logout("/auth/logout/"+username)
       .then(response => {
         validate401(response);
         const message = response.message;
-        if ( response.error) {
+        if ( response.status && response.status != '200' ) {
           throw new Error(message);
         }
         value.setLoading(false);
@@ -275,7 +278,7 @@ logout("/auth/logout/"+username)
       </div>
       <div className='btnAction-h'>
         <div className='btnContainer'>
-          <button onClick={addIp} type="submit" className="btn btn-primary btn-sm btn-block">
+          <button type="submit" className="btn btn-primary btn-sm btn-block">
             <i className="bi bi-cloud-arrow-up">
             </i>
             <span> Guardar</span>
@@ -294,7 +297,16 @@ logout("/auth/logout/"+username)
       columns={columns}
       pageSize={5}
       rowsPerPageOptions={[5]}
-
+      initialState={{
+        sorting: {
+          sortModel: [
+            {
+              field: 'state',
+              sort: 'desc',
+            }
+          ]
+        }
+      }}
     />
   </div></div >
 }

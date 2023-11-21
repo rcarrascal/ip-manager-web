@@ -18,6 +18,7 @@ function Login() {
 
 
     useEffect(() => {
+        value.setPage("login");
         value.setLoading(false)
         value.setClearUser();
         const fetchExternalConfig = async () => {
@@ -101,9 +102,7 @@ function Login() {
                 </td>
             </tr>
             <tr>
-                <td>
-                </td>
-                <td className='titlePage'>
+                <td colSpan={3} className='titleLogin'>
                 Login
                 </td>
             </tr>

@@ -7,6 +7,19 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.overlay-fullscreen {
+  position: fixed;
+  width: 100%;
+}
+
+.login {
+  height: 100vh;
+}
+
+.home {
+  height: 135vh;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
