@@ -1,8 +1,8 @@
 feign:
   client:
     url:
-      login: http://localhost:3706/auth
-      ipManager: http://localhost:3706/ip_master
+      login: https://ip-manager-service-test.puertocartagena.com:3706/auth
+      ipManager: https://ip-manager-service-test.puertocartagena.com:3706/ip_master
 
 spring:
   thymeleaf:
