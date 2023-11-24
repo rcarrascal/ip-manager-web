@@ -68,12 +68,12 @@ function Home() {
    * Definición de la tabla de Ip
    */
   const columns: GridColDef[] = [
-    { field: 'ipAddress', headerName: 'Dirección IP', width: 110, hideSortIcons: false, disableColumnMenu: true, headerClassName: 'dataGrid-header',  },
+    { field: 'ipAddress', headerName: 'Dirección IP', width: 130, hideSortIcons: false, disableColumnMenu: true, headerClassName: 'dataGrid-header',  },
     { field: 'state', headerName: 'Estado', width: 110, hideSortIcons: false, disableColumnMenu: true, headerClassName: 'dataGrid-header', },
     { 
       field: 'message',
       headerName: 'Motivo Rechazo', 
-      width: 422, 
+      width: 402, 
       renderCell: (params) => (
           <Tooltip title={params.value}>      
           <div style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>        
