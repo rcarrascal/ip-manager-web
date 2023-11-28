@@ -18,7 +18,7 @@ function Login() {
 
 
     useEffect(() => {
-        value.setPage("login");
+        value.setPage("login-fullscreen");
         value.setLoading(false)
         value.setClearUser();
         const fetchExternalConfig = async () => {
@@ -37,11 +37,11 @@ function Login() {
 
     const login = async() => {
         if (username === "") {
-            notification("warning", "Validación de campos ", "Usuario no puede estar vacia");
+            notification("warning", "Validación de campos ", "Usuario no puede estar vacía");
             return;
         }
         if (password === "") {
-            notification("warning", "Validación de campos ", "Password no puede estar vacia");
+            notification("warning", "Validación de campos ", "Password no puede estar vacía");
             return;
         }
         value.setLoading(true);

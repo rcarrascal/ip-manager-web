@@ -12,11 +12,11 @@ body {
   width: 100%;
 }
 
-.login {
+.login-fullscreen {
   height: 100vh;
 }
 
-.home {
+.home-fullscreen {
   height: 135vh;
 }
 

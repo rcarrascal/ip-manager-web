@@ -137,7 +137,7 @@ function Home() {
    * Metodo que se ejecuta cada vez que se actualiza el estado.
    */
   useEffect(() => {
-    value.setPage("home");
+    value.setPage("home-fullscreen");
     fetchData();
   }, [fetchData]);
 
@@ -165,7 +165,7 @@ function Home() {
   const addIp = () => {
 
     if (ip === "") {
-      notification("warning", "Validación de campos ", "IP no puede estar vacia");
+      notification("warning", "Validación de campos ", "IP no puede estar vacía");
       return;
     }
 
