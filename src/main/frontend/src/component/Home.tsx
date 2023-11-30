@@ -100,7 +100,7 @@ function Home() {
         localStorage.clear();
         value.handleToken(null);
         value.setClearUser();
-        notification("danger", "Listando IPs","Su token no es valido. Favor de logearse nuevamente");
+        notification("danger", "La sesión caducó","Su token no es valido. Por favor loguearse nuevamente");
         navigate("/login");
         return true;
       }
@@ -114,21 +114,17 @@ function Home() {
 
     await getData('/ip_master', value.token)
       .then(response => {
+        if (validate401(response)) return;
         value.setLoading(false);
-        if(validate401(response)){
-          return;
-        }
-
+        
         if ( response.status!=='200' && response.error) {
           throw new Error(response.message);
         }
         setRows(response.response);
       }).catch(error => {
-        if(!validate401(error)){
         value.setLoading(false);
-        const err = error.message ? error.message : error;
-        notification("danger", "Listando IPs ", err);
-      }
+      const err = error.message ? error.message : error;
+      notification("danger", "Listando IPs ", err);
       });
 
   }, [])
@@ -148,6 +144,8 @@ function Home() {
     };
     postData('/ip_master', data, headers)
       .then(response => {
+        if (validate401(response)) return;
+        value.setLoading(false);
         const message = response.message;
         if ( response.status && response.status!=='200' ) {
           throw new Error(message);
@@ -157,6 +155,7 @@ function Home() {
         notification("info", "Procesando IP ", message);
       })
       .catch(error => {
+        value.setLoading(false);
         const err = error.message ? error.message : 'Error al procesar la IP';
         notification("danger", "Procesando IP ", err);
       });
@@ -209,12 +208,13 @@ logout("/auth/logout/"+username)
     showConfirmationDialog(`¿Quieres eliminar la IP ${val.ipAddress}?`, () => {
       deleteData('/ip_master/' + val.id,  value.token)
       .then(response => {
+        if (validate401(response)) return;
+        value.setLoading(false);
         validate401(response);
         const message = response.message;
         if ( response.status && response.status != '200' ) {
           throw new Error(message);
         }
-        value.setLoading(false);
         fetchData();
         notification("info", "Eliminando IP ", message);
 
@@ -289,7 +289,6 @@ logout("/auth/logout/"+username)
           </button>
         </div>
       </div>
-    {/* <button type="submit">Login</button> */}
   </form>
     <br />
     <DataGrid

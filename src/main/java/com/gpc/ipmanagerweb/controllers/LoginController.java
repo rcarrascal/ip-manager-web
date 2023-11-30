@@ -56,7 +56,7 @@ public class LoginController {
             }
         }
         IpManagerResponse<Answer> response=loginClient.doLogin(mapper.toLoginRequest(user));
-        log.info("Respuesta " + response);
+        log.info("Respuesta " + response.getResponse());
         return response;
     }
 

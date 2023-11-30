@@ -34,8 +34,6 @@ export const StorageProvider = (props) => {
         });
     }
     const setClearUser = () => {
-        localStorage.clear();
-        localStorage.setItem('storage', null);
         setStorage({
             ...storage,
             loading: false,
