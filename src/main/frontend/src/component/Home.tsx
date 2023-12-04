@@ -5,7 +5,7 @@ import './home.css'
 import { ipMaster } from '../dto/ipMaster';
 import { StorageContext } from '../storage/storageContext';
 import { getData, postData, deleteData ,logout} from '../api/apiService.ts';
-import { notification, ipValid } from '../util/util';
+import { notification, ipValid, validateOctetos } from '../util/util';
 import Swal from 'sweetalert2';
 
 import { useNavigate } from 'react-router-dom';
@@ -162,6 +162,7 @@ function Home() {
   }
 
   const addIp = () => {
+     setIp(validateOctetos(ip));
 
     if (ip === "") {
       notification("warning", "Validación de campos ", "IP no puede estar vacía");

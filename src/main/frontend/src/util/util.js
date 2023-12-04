@@ -41,3 +41,24 @@ export const ipValid = (ip) => {
     }  
     return false;
 }
+
+/**
+ * Metodo para valdiar los octetos de una ip.
+ * @param {*} event 
+ * @returns 
+ */
+export const validateOctetos  = (ip) => {
+
+    const octetos = ip.split(".");
+
+    for (let i = 0; i < octetos.length; i++) {
+        let octeto = octetos[i];
+        let numero = parseInt(octeto);
+        octetos[i] = numero.toString();
+    }
+    // Unir los octetos en una IP    
+    let ipPreparada = octetos.join('.');
+
+    // Devolver la IP preparada
+    return ipPreparada;
+}
