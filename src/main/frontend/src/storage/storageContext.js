@@ -41,9 +41,10 @@ export const StorageProvider = (props) => {
         });
     }
     const setUserInfo = (prop) => (event) => {
+        const propValue = (prop === 'username') ? event.target.value.toUpperCase() : event.target.value;
         setStorage({
             ...storage,
-            user: { ...storage.user, [prop]: event.target.value }
+            user: { ...storage.user, [prop]: propValue }
         });
 
     }

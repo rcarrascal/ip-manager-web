@@ -27,7 +27,7 @@ public class FeignExceptionHandler {
         if (matcher.find()) {
             return matcher.group(1);
         } else {
-            return "Error: Comunícate con soporte";
+            return "Error: No se pudo establecer conexión con el backend";
         }
     }
 }

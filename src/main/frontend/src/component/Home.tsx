@@ -162,17 +162,17 @@ function Home() {
   }
 
   const addIp = () => {
-     setIp(validateOctetos(ip));
-
-    if (ip === "") {
-      notification("warning", "Validación de campos ", "IP no puede estar vacía");
-      return;
-    }
 
     if (!ipValid(ip)) {
       notification("warning", "Solo IPs públicas ", "Debe escribir una IP válida");
       return;
     }
+
+    if (!validateOctetos(ip)) {
+      notification("warning", "Validación de campos ", "Recuerda que los octetos de la IP no deben comenzar con cero, a menos que sean solo cero.");
+      return;
+    }
+
     const data: ipMaster = {
       ipAddress: ip
     }
@@ -228,6 +228,10 @@ logout("/auth/logout/"+username)
   }
   const handleSubmit = async (event) => {
     event.preventDefault();
+    if (ip === "") {
+      notification("warning", "Validación de campos ", "IP no puede estar vacía");
+      return;
+    }
     await addIp();
   };
 

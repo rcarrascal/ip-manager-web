@@ -47,18 +47,19 @@ export const ipValid = (ip) => {
  * @param {*} event 
  * @returns 
  */
-export const validateOctetos  = (ip) => {
+export const validateOctetos  = (ip ) => {
 
     const octetos = ip.split(".");
 
     for (let i = 0; i < octetos.length; i++) {
         let octeto = octetos[i];
+        // Convertir el octeto a un número entero        
         let numero = parseInt(octeto);
-        octetos[i] = numero.toString();
-    }
-    // Unir los octetos en una IP    
-    let ipPreparada = octetos.join('.');
 
-    // Devolver la IP preparada
-    return ipPreparada;
+        // Verificar si el número que tiene el valor absoluto es igual al octeto original        
+        if (numero.toString() !== octeto) {
+            return false;
+        }
+    }
+    return true;
 }

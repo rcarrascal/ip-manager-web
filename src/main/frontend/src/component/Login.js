@@ -53,8 +53,8 @@ function Login() {
             return;
         }
         const data = {
-            username: username,
-            password: password,
+            username,
+            password,
             captchaResponse: token
         };
         const headers = {
