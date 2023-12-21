@@ -4,7 +4,8 @@ import storageData from './stateInitial';
 export const StorageContext = React.createContext({});
 export const StorageProvider = (props) => {
     //Estorage globar con la información del estado de la aplicación
-    const [storage, setStorage] = useState(localStorage.getItem("storage") === null ? storageData : JSON.parse(localStorage.getItem("storage")));
+    const getStorage = localStorage.getItem("storage");
+    const [storage, setStorage] = useState(getStorage === null || getStorage === 'null' ? storageData : JSON.parse(localStorage.getItem("storage")));
     const [token, setToken] = useState(localStorage.getItem("token") === null ? null : localStorage.getItem("token"));
     const [externalSiteKey, setExternalSiteKey] = useState("");
     const [page, setPage] = useState("");

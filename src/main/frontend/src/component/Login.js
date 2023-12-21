@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import ReCAPTCHA from "react-google-recaptcha";
 
 import { postData } from '../api/apiService.ts'
-import Captcha from '../util/Captcha';
+import { getToken, loadReCaptcha } from '../util/Captcha';
 
 
 function Login() {
@@ -14,7 +14,6 @@ function Login() {
     const { username, password } = value.storage.user;
     const navigate = useNavigate();
     const recaptchaRef = createRef();
-    const captcha = new Captcha(value.externalSiteKey, "submit");
 
 
     useEffect(() => {
@@ -26,6 +25,7 @@ function Login() {
             const response = await fetch("/config/external_siteKey");
             const data = await response.text();
             value.setExternalSiteKey(data);
+            loadReCaptcha(data);
           } catch (error) {
             notification("danger", "Error al obtener la configuración", error.message);
           }
@@ -45,7 +45,7 @@ function Login() {
             return;
         }
         value.setLoading(true);
-        const token = await captcha.getToken();
+        const token = await getToken(value.externalSiteKey, "submit");
         // Validar el token
         if (!token) {
             notification("danger", "Login ", "No se pudo obtener el token de reCAPTCHA");
