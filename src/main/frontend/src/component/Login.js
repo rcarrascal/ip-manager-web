@@ -6,20 +6,14 @@ import { useNavigate } from 'react-router-dom';
 import ReCAPTCHA from "react-google-recaptcha";
 
 import { postData } from '../api/apiService.ts'
-import Captcha from '../util/Captcha';
+import Captcha, { getToken, loadReCaptcha } from '../util/Captcha';
 
-const loadReCaptcha = (siteKey) => {
-    const script = document.createElement('script')
-    script.src = `https://www.recaptcha.net/recaptcha/api.js?render=${siteKey}`
-    document.body.appendChild(script)
-}
 
 function Login() {
     const value = useContext(StorageContext);
     const { username, password } = value.storage.user;
     const navigate = useNavigate();
     const recaptchaRef = createRef();
-    const captcha = new Captcha(value.externalSiteKey, "submit");
 
 
     useEffect(() => {
@@ -51,7 +45,7 @@ function Login() {
             return;
         }
         value.setLoading(true);
-        const token = await captcha.getToken();
+        const token = await getToken(value.externalSiteKey, "submit");
         // Validar el token
         if (!token) {
             notification("danger", "Login ", "No se pudo obtener el token de reCAPTCHA");
