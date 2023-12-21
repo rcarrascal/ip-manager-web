@@ -2,7 +2,6 @@ window.grecaptcha = window.grecaptcha || {};
  
 class Captcha {
     constructor(siteKey, action) {
-        loadReCaptcha(siteKey);
         this.siteKey = siteKey;
         this.action = action;
     }
@@ -14,12 +13,6 @@ class Captcha {
             })
         return token;
     }
-}
- 
-const loadReCaptcha = (siteKey) => {
-    const script = document.createElement('script')
-    script.src = `https://www.recaptcha.net/recaptcha/api.js?render=${siteKey}`
-    document.body.appendChild(script)
 }
  
 export default Captcha;

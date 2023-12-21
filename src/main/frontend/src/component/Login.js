@@ -8,6 +8,11 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { postData } from '../api/apiService.ts'
 import Captcha from '../util/Captcha';
 
+const loadReCaptcha = (siteKey) => {
+    const script = document.createElement('script')
+    script.src = `https://www.recaptcha.net/recaptcha/api.js?render=${siteKey}`
+    document.body.appendChild(script)
+}
 
 function Login() {
     const value = useContext(StorageContext);
@@ -26,6 +31,7 @@ function Login() {
             const response = await fetch("/config/external_siteKey");
             const data = await response.text();
             value.setExternalSiteKey(data);
+            loadReCaptcha(data);
           } catch (error) {
             notification("danger", "Error al obtener la configuración", error.message);
           }

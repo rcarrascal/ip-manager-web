@@ -138,6 +138,7 @@ function Home() {
   }, [fetchData]);
 
   const postIp = ( data: ipMaster ) => {
+    value.setLoading(true);
     const headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer " + value.token
