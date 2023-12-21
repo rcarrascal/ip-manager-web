@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import ReCAPTCHA from "react-google-recaptcha";
 
 import { postData } from '../api/apiService.ts'
-import Captcha, { getToken, loadReCaptcha } from '../util/Captcha';
+import { getToken, loadReCaptcha } from '../util/Captcha';
 
 
 function Login() {
