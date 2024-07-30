@@ -12,11 +12,12 @@ import java.util.regex.Pattern;
 @Slf4j
 @ControllerAdvice
 public class FeignExceptionHandler {
-/*
+
     @ExceptionHandler(FeignException.class)
     public ResponseEntity<ErrorResponse> handleFeignException(FeignException ex) {
 
         log.error("Error en la solicitud a otro servicio: {}" , ex.getLocalizedMessage());
+        ex.printStackTrace();
         final ErrorResponse errorResponse = new ErrorResponse(String.valueOf(ex.status()), extractCustomErrorMessage(ex.getLocalizedMessage()));
         return ResponseEntity.status(ex.status()).body(errorResponse);
     }
@@ -30,6 +31,4 @@ public class FeignExceptionHandler {
             return "Error: No se pudo establecer conexión con el backend";
         }
     }
-
- */
 }
