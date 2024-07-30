@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 @Slf4j
 @ControllerAdvice
 public class FeignExceptionHandler {
-
+/*
     @ExceptionHandler(FeignException.class)
     public ResponseEntity<ErrorResponse> handleFeignException(FeignException ex) {
 
@@ -30,4 +30,6 @@ public class FeignExceptionHandler {
             return "Error: No se pudo establecer conexión con el backend";
         }
     }
+
+ */
 }
