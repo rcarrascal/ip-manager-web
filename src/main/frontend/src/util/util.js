@@ -9,7 +9,7 @@ import { Store } from 'react-notifications-component';
  * @param {*} title 
  * @param {*} message 
  */
-export function notification(type, title, message) {
+export function notification(type, title, message, duration = 5000) {
 
     Store.addNotification({
         title: title,
@@ -20,27 +20,44 @@ export function notification(type, title, message) {
         animationIn: ["animate__animated", "animate__fadeIn"],
         animationOut: ["animate__animated", "animate__fadeOut"],
         dismiss: {
-            duration: 5000,
+            duration,
             onScreen: true
         }
     });
 
 }
 /**
- * Metodo para valdiar si una ip es valida.
- * @param {*} event 
- * @returns 
+ * Método para validar si una IP es pública y válida.
+ * Rechaza IPs privadas, máscaras de subred, y direcciones APIPA.
+ * @param {string} ip 
+ * @returns {boolean}
  */
 export const ipValid = (ip) => {
+    // IP válida (formato general)
+    const ipFormat = /^(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)$/;
+    if (!ipFormat.test(ip)) return false;
 
-    const privateIPRegex = /^(10\.|192\.168\.|172\.(1[6-9]|2[0-9]|3[01])\.)/;
-    const publicIPRegex = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+    // No permitir 255.x.y.z (máscara de subred)
+    if (/^255\./.test(ip)) return false;
 
-    if (publicIPRegex.test(ip) && !privateIPRegex.test(ip)) {
-        return true;  
-    }  
-    return false;
-}
+    // No permitir 169.254.x.y (APIPA)
+    if (/^169\.254\./.test(ip)) return false;
+
+    // No permitir IPs privadas
+    if (
+        /^10\./.test(ip) ||
+        /^192\.168\./.test(ip) ||
+        /^172\.(1[6-9]|2[0-9]|3[0-1])\./.test(ip)
+    ) return false;
+
+    // No permitir loopback
+    if (/^127\./.test(ip)) return false;
+
+    // No permitir 0.x.x.x
+    if (/^0\./.test(ip)) return false;
+
+    return true;
+};
 
 /**
  * Metodo para valdiar los octetos de una ip.
