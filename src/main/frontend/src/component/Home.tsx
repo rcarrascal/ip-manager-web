@@ -100,7 +100,7 @@ function Home() {
         localStorage.clear();
         value.handleToken(null);
         value.setClearUser();
-        notification("danger", "La sesión caducó","Su token no es valido. Por favor loguearse nuevamente");
+        notification("danger", "La sesión caducó","Su token no es valido. Por favor loguearse nuevamente", 7000);
         navigate("/login");
         return true;
       }
@@ -124,7 +124,7 @@ function Home() {
       }).catch(error => {
         value.setLoading(false);
       const err = error.message ? error.message : error;
-      notification("danger", "Listando IPs ", err);
+      notification("danger", "Listando IPs ", err, 7000);
       });
 
   }, [])
@@ -158,7 +158,7 @@ function Home() {
       .catch(error => {
         value.setLoading(false);
         const err = error.message ? error.message : 'Error al procesar la IP';
-        notification("danger", "Procesando IP ", err);
+        notification("danger", "Procesando IP ", err, 7000);
       });
   }
 
@@ -223,7 +223,7 @@ logout("/auth/logout/"+username)
       })
       .catch(error => {
         value.setLoading(false);
-        notification("danger", "Eliminando Ip ", error);
+        notification("danger", "Eliminando Ip ", error, 7000);
       });
     })
   }
