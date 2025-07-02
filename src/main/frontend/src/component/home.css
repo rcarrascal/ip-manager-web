@@ -26,12 +26,6 @@
   vertical-align: bottom;
 }
 
-.logoVigilado {
-  vertical-align: bottom;
-  padding-top: 0.3rem !important;
-  text-align: left;
-}
-
 .logoContecar {
   vertical-align: bottom;
   text-align: right;
@@ -40,9 +34,10 @@ img{
   width: 9rem;
 }
 .titlePage{
+  width: 100%;
   text-align: center !important;
   color: #0079ba !important;
   font-weight: bold;
   font-size: 1.5rem;
-  padding-left: 1rem;
+  padding-left: 10rem;
 }
