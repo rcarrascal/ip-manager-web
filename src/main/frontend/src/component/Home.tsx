@@ -250,9 +250,6 @@ logout("/auth/logout/"+username)
         </td>
     </tr>
     <tr>
-        <td className='logoVigilado'>
-          <img src={process.env.PUBLIC_URL + '/img/Logo-vigilado.png'} className="logoVigilado" alt="Logo vigilado" ></img>
-        </td>
         <td className='titlePage'>
           Solicitar Autorización de IPs Públicas
         </td>
