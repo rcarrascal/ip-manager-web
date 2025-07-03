@@ -1,4 +1,3 @@
-
 import { Store } from 'react-notifications-component';
 
 /**
@@ -55,6 +54,37 @@ export const ipValid = (ip) => {
 
     // No permitir 0.x.x.x
     if (/^0\./.test(ip)) return false;
+
+    // Convertir IP a número para comparar rangos
+    const ipToLong = (ip) => ip.split('.').reduce((acc, oct) => (acc << 8) + parseInt(oct, 10), 0);
+
+    const ipNum = ipToLong(ip);
+
+    // Rangos no públicos
+    const ranges = [
+        // CGNAT
+        [ipToLong('100.64.0.0'), ipToLong('100.127.255.255')],
+        // 192.0.0.0/24 Reservado
+        [ipToLong('192.0.0.0'), ipToLong('192.0.0.255')],
+        // 192.0.2.0/24 Test-net-1
+        [ipToLong('192.0.2.0'), ipToLong('192.0.2.255')],
+        // 192.88.99.0/24 Anycast
+        [ipToLong('192.88.99.0'), ipToLong('192.88.99.255')],
+        // 198.18.0.0/15 Prueba de red
+        [ipToLong('198.18.0.0'), ipToLong('198.19.255.255')],
+        // 198.51.100.0/24 Test-net-2
+        [ipToLong('198.51.100.0'), ipToLong('198.51.100.255')],
+        // 203.0.113.0/24 Test-net-3
+        [ipToLong('203.0.113.0'), ipToLong('203.0.113.255')],
+        // Multicast 224.0.0.0 - 239.255.255.255
+        [ipToLong('224.0.0.0'), ipToLong('239.255.255.255')],
+        // Reservado 240.0.0.0 - 255.255.255.254
+        [ipToLong('240.0.0.0'), ipToLong('255.255.255.254')],
+    ];
+
+    for (const [start, end] of ranges) {
+        if (ipNum >= start && ipNum <= end) return false;
+    }
 
     return true;
 };
