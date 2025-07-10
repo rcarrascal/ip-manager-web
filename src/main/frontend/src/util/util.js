@@ -62,14 +62,22 @@ export const ipValid = (ip) => {
 
     // Rangos no públicos
     const ranges = [
+        // Reservado
+        [ipToLong('0.0.0.0'), ipToLong('0.255.255.255')],
         // CGNAT
         [ipToLong('100.64.0.0'), ipToLong('100.127.255.255')],
+        // Loopback 
+        [ipToLong('127.0.0.0'), ipToLong('127.255.255.255')],
+        // Link-local 
+        [ipToLong('169.254.0.0'), ipToLong('169.254.255.255')],
+        // Privada 
+        [ipToLong('172.16.0.0'), ipToLong('172.31.255.255')],
         // 192.0.0.0/24 Reservado
         [ipToLong('192.0.0.0'), ipToLong('192.0.0.255')],
         // 192.0.2.0/24 Test-net-1
         [ipToLong('192.0.2.0'), ipToLong('192.0.2.255')],
-        // 192.88.99.0/24 Anycast
-        [ipToLong('192.88.99.0'), ipToLong('192.88.99.255')],
+        // Privada 
+        [ipToLong('192.168.0.0'), ipToLong('192.168.255.255')],
         // 198.18.0.0/15 Prueba de red
         [ipToLong('198.18.0.0'), ipToLong('198.19.255.255')],
         // 198.51.100.0/24 Test-net-2
@@ -80,6 +88,8 @@ export const ipValid = (ip) => {
         [ipToLong('224.0.0.0'), ipToLong('239.255.255.255')],
         // Reservado 240.0.0.0 - 255.255.255.254
         [ipToLong('240.0.0.0'), ipToLong('255.255.255.254')],
+        // 192.88.99.0/24 Anycast
+        [ipToLong('192.88.99.0'), ipToLong('192.88.99.255')],
     ];
 
     for (const [start, end] of ranges) {
