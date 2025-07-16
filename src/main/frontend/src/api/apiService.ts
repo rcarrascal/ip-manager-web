@@ -1,31 +1,35 @@
-export async function getData(url = '', token = '') {
-    const timeout = 10000; // 10 segundos (ajusta el valor según tus necesidades)
-  
-    const controller = new AbortController();
-    const signal = controller.signal;
-  
-    const fetchPromise = fetch(url, {
-      method: 'GET',
-      mode: 'cors',
-      cache: 'no-cache',
-        //credentials
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': "Bearer " + token
-        },
-      body: null,
-      signal, // Pasamos la señal del controlador
-    });
-  
-    // Configuramos el tiempo límite
-    setTimeout(() => {
-      controller.abort(); // Abortamos la solicitud si se excede el tiempo límite
-    }, timeout);
-  
-    const response = await fetchPromise;
 
-  
-    return response.json();
+function handleApiError(error: any) {
+    if (error.name === 'TimeoutError' || error.name === 'AbortError') {
+        throw new Error('La solicitud ha superado el tiempo de espera. Si el problema persiste, comunicarse con soporte por favor.');
+    }
+    if (typeof error === 'object' && error.message) {
+        throw error;
+    }
+    throw {
+        message: "Error desconocido, comunicarse con soporte por favor",
+    };
+}
+
+export async function getData(url = '', token = '') {
+    const timeout = 10000; // 10 segundos
+
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            mode: 'cors',
+            cache: 'no-cache',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': "Bearer " + token
+            },
+            body: null,
+            signal: AbortSignal.timeout(timeout),
+        });
+        return response.json();
+    } catch (error: any) {
+        handleApiError(error);
+    }
 }
 
 export async function logout(url = '') {
@@ -33,67 +37,48 @@ export async function logout(url = '') {
         method: 'GET',
         mode: 'cors',
         cache: 'no-cache',
-        //credentials
         headers: {
             'Content-Type': 'application/json'
         }
-
     });
     return response.json();
 }
 
 export async function postData(url = '', data = {}, headers = {}) {
-    const timeout = 10000; // 10 segundos (ajusta el valor según tus necesidades)
-  
-    const controller = new AbortController();
-    const signal = controller.signal;
-  
-    const fetchPromise = fetch(url, {
-      method: 'POST',
-      mode: 'cors',
-      cache: 'no-cache',
-      headers: headers,
-      body: JSON.stringify(data),
-      signal, // Pasamos la señal del controlador
-    });
-  
-    // Configuramos el tiempo límite
-    setTimeout(() => {
-      controller.abort(); // Abortamos la solicitud si se excede el tiempo límite
-    }, timeout);
-  
-    const response = await fetchPromise;
+    const timeout = 10000; // 10 segundos
 
-  
-    return response.json();
-  }
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            headers: headers,
+            body: JSON.stringify(data),
+            signal: AbortSignal.timeout(timeout),
+        });
+        return response.json();
+    } catch (error: any) {
+        handleApiError(error);
+    }
+}
+
 export async function deleteData(url = '', token = '') {
-    const timeout = 10000; // 10 segundos (ajusta el valor según tus necesidades)
-  
-    const controller = new AbortController();
-    const signal = controller.signal;
-  
-    const fetchPromise = fetch(url, {
-      method: 'DELETE',
-      mode: 'cors',
-      cache: 'no-cache',
-        //credentials
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': "Bearer " + token
-        },
-      body: null,
-      signal, // Pasamos la señal del controlador
-    });
-  
-    // Configuramos el tiempo límite
-    setTimeout(() => {
-      controller.abort(); // Abortamos la solicitud si se excede el tiempo límite
-    }, timeout);
-  
-    const response = await fetchPromise;
+    const timeout = 10000; // 10 segundos
 
-  
-    return response.json();
-
+    try {
+        const response = await fetch(url, {
+            method: 'DELETE',
+            mode: 'cors',
+            cache: 'no-cache',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': "Bearer " + token
+            },
+            body: null,
+            signal: AbortSignal.timeout(timeout),
+        });
+        return response.json();
+    } catch (error: any) {
+        handleApiError(error);
+    }
 }
