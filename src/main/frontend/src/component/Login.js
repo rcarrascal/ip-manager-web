@@ -27,7 +27,7 @@ function Login() {
             value.setExternalSiteKey(data);
             loadReCaptcha(data);
           } catch (error) {
-            notification("danger", "Error al obtener la configuración", error.message);
+            notification("danger", "Error al obtener la configuración", error.message, 7000);
           }
         };
     
@@ -48,7 +48,7 @@ function Login() {
         const token = await getToken(value.externalSiteKey, "submit");
         // Validar el token
         if (!token) {
-            notification("danger", "Login ", "No se pudo obtener el token de reCAPTCHA");
+            notification("danger", "Login ", "No se pudo obtener el token de reCAPTCHA", 7000);
             value.setLoading(false);
             return;
         }
@@ -65,13 +65,12 @@ function Login() {
                 if (response.status && response.status !== '200') {
                     throw response;
                 }
-                value.setLoading(false);
                 value.handleToken(response.response.token);
                 navigate("/");
             }).catch(error => {
                 const errMessage = error.message ? error.message : 'Error desconocido, comunicarse con soporte por favor';
-                const title = error.status.startsWith('406') ? 'Google Recaptcha ' : 'Login ';
-                notification("danger", title, errMessage);
+                notification("danger", 'Login ', errMessage, 7000);
+            }).finally(() => {
                 value.setLoading(false);
             });
     }
